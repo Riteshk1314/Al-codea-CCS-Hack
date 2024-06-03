@@ -1,25 +1,47 @@
-import logo from './logo.svg';
+// src/App.js
+import React from 'react';
+import SelectDropdown from './components/SelectDropdown';
+import QABox from './components/QABox';
 import './App.css';
 
-function App() {
+const App = () => {
+  const handleApprove = () => {
+    console.log('Approved');
+  };
+
+  const handleDiscard = () => {
+    console.log('Discarded');
+  };
+
+  const handleNextQuestion = () => {
+    console.log('Next Question');
+  };
+
+  const handleGenerate = () => {
+    console.log('Generate');
+  };
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <SelectDropdown />
       </header>
+      <main>
+        <QABox
+          question="What is React?"
+          answer="React is a JavaScript library for building user interfaces."
+          onApprove={handleApprove}
+          onDiscard={handleDiscard}
+          onNextQuestion={handleNextQuestion}
+          onGenerate={handleGenerate}
+        />
+      </main>
     </div>
   );
-}
+};
 
 export default App;
+
+
+
+
