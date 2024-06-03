@@ -21,10 +21,11 @@
       <div class="row g-0 text-center">
         <div class="col-sm-6 col-md-8">
           <div class="form-group">
-            <div id="additional-textareas"></div>
+            <div id="additional-textareas">
             <textarea class="form-control" id="exampleFormControlTextarea1" rows="1" name="field1"></textarea>
           </div>
           <input type="hidden" id="textareaCount" name="textarea_count" value="1" />
+        </div>
         </div>
         <div class="col-6 col-md-4">
           <button type="button" class="btn btn-secondary" id="addTextareaButton">
@@ -47,6 +48,8 @@
         newTextarea.className = "form-control";
         newTextarea.rows = 1;
         newTextarea.name = "field" + textareaCount;
+        
+        // Append the new textarea at the bottom
         document
           .getElementById("additional-textareas")
           .appendChild(newTextarea);
@@ -55,6 +58,16 @@
         document.getElementById("textareaCount").value = textareaCount;
       });
   </script>
+
+  <div class="container">
+    {% for topic in field %}
+    <div class="row">
+      <div class="col">
+        <h1>{{ topic }}</h1>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
 </body>
 
 </html>
