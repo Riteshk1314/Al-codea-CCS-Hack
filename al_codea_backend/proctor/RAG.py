@@ -1,7 +1,7 @@
 from langchain_community.embeddings import OpenAIEmbeddings
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_community.llms import Ollama #using an open source model 
-llm=Ollama(model="llama2")
+
 from langchain_core.prompts import ChatPromptTemplate
 import bs4
 from langchain.chains.combine_documents import create_stuff_documents_chain
@@ -10,38 +10,35 @@ from langchain.chains import create_retrieval_chain
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.vectorstores import FAISS
 
-
-def doc(link):
-    loader=WebBaseLoader(web_paths=("{link}",),
-                         bs_kwargs=dict(parse_only=bs4.SoupStrainer(
-                             class_=("post-title","post-content","post-header")
-
-                     )))
-
-    documents=loader.load()
-    documents
-    
-
-
-
-
-
-
 def ques_maker(link):
     
-    doc(link)
-    db=FAISS.from_documents(documents[:30],OllamaEmbeddings())
+    loader=WebBaseLoader(web_paths=(f"{link}",))
 
+    documents=loader.load()
+    db=FAISS.from_documents(documents[:30],OllamaEmbeddings())
+    retriever=db.as_retriever()
+    llm=Ollama(model="llama2")
     prompt = ChatPromptTemplate.from_template("""answer the question based on context only
                                         <context>
                                         {context}
                                         </context> 
                                           Question;{input}""")
-
     document_chain=create_stuff_documents_chain(llm,prompt)
-    retriever=db.as_retriever()
-
     retrieval_chain = create_retrieval_chain(retriever,document_chain)
     response=retrieval_chain.invoke({"input":"create an objective question from the context given. question should have 4 options out of which 1 is correct "})
     ques_ans = response['answer']
-    return ques_ans
+    
+    question_start = ques_ans.find("Question:")
+    if True:
+        question_end = ques_ans.find("\n", question_start)
+        question = ques_ans[question_start:question_end].strip()
+
+        answer_start = ques_ans.find("Answer:")
+        if answer_start != -1:
+            answer_end = ques_ans.find("\n", answer_start)
+            answer = ques_ans[answer_start:answer_end].strip()
+
+            resultt = f"{question}\n{answer}"
+            return result
+    
+    return "Failed to extract question and answer from the response."
