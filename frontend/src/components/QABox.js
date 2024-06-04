@@ -12,11 +12,11 @@ const QABox = ({ question, answer, onApprove, onDiscard, onNextQuestion, onGener
         <strong>A:</strong> {answer}
       </div>
       <div className="actions">
-        <div>
+        <div className="button-group top-buttons">
           <button className="approve-button" onClick={onApprove}>Approve</button>
           <button className="discard-button" onClick={onDiscard}>Discard</button>
         </div>
-        <div>
+        <div className="button-group bottom-buttons">
           <button className="next-question-button" onClick={onNextQuestion}>Next Question</button>
           <button className="generate-button" onClick={onGenerate}>Generate</button>
         </div>
@@ -26,6 +26,7 @@ const QABox = ({ question, answer, onApprove, onDiscard, onNextQuestion, onGener
 };
 
 export default QABox;
+
 
 
 

@@ -1,22 +1,137 @@
 /* src/App.css */
-.App {
-  text-align: center;
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 0;
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #4CAF50;
+  color: white;
   padding: 20px;
+  text-align: center;
+}
+
+.App-header .input-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.App-header .input-container select {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-right: 10px;
+}
+
+.App-header .input-container input {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 200px;
+}
+
+.App-header button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.App-header button:hover {
+  background-color: #0056b3;
+}
+
+.qa-box {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 20px;
+  margin: 20px 0;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
 
-main {
-  padding: 20px;
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
+.question {
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
 }
+
+.answer {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.button-group.top-buttons {
+  margin-bottom: 20px;
+}
+
+.button-group.bottom-buttons {
+  margin-top: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 0 10px;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.approve-button {
+  background-color: #28a745;
+  color: white;
+}
+
+.discard-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+.next-question-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.generate-button {
+  background-color: #ffc107;
+  color: black;
+}
+
+
 
 
