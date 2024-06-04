@@ -54,28 +54,14 @@ Answer: a) npm run build
 
 all_feilds=[
     'c',
+    'c++'
     'java',
     'python',
-    'django',
-    'flask',
     'html',
     'css',
     'js',
-    'jquery',
     'bootstrap',
-    'react',
-    'angular',
-    'node',
-    'express',
-    'mongodb',
     'sql',
-    'mysql',
-    'dbms',
-    'nosql',
-    'data science',
-    'machine learning',
-    'deep learning',
-    'artificial intelligence',
     'dsa'
 ]
 
