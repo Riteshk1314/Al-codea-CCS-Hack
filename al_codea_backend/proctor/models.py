@@ -16,3 +16,21 @@ import uuid
 #     def __str__(self):
 #         return self.question_text
     
+
+
+from django.db import models
+
+# Create your models here.
+class topic(models.Model):
+    feild=models.CharField(max_length=100)
+    def __str__(self):
+        return self.feild
+    
+class question(models.Model):
+    topic=models.ForeignKey(topic,on_delete=models.CASCADE)
+    question=models.CharField(max_length=1000)
+    option1=models.CharField(max_length=1000)
+    option2=models.CharField(max_length=1000)
+    option3=models.CharField(max_length=1000)
+    option4=models.CharField(max_length=1000)
+    answer=models.CharField(max_length=1000)
