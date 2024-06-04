@@ -161,7 +161,7 @@ def index(request):
             
         question_creation(xyz,"dsa") #here in xyz ritesh will pass the string of questions from langchain
         
-    
+        return redirect('/')
     
     querryset=Topic.objects.all()
     
