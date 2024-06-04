@@ -28,17 +28,16 @@ def ques_maker(link):
     response=retrieval_chain.invoke({"input":"create an objective question from the context given. question should have 4 options out of which 1 is correct "})
     ques_ans = response['answer']
     
-    question_start = ques_ans.find("Question:")
-    if True:
-        question_end = ques_ans.find("\n", question_start)
-        question = ques_ans[question_start:question_end].strip()
+    # question_start = ques_ans.find("Question:")
+    # if True:
+    #     question_end = ques_ans.find("\n", question_start)
+    #     question = ques_ans[question_start:question_end].strip()
 
-        answer_start = ques_ans.find("Answer:")
-        if answer_start != -1:
-            answer_end = ques_ans.find("\n", answer_start)
-            answer = ques_ans[answer_start:answer_end].strip()
-
-            resultt = f"{question}\n{answer}"
-            return result
+    #     answer_start = ques_ans.find("Answer:")
+    #     if answer_start != -1:
+    #         answer_end = ques_ans.find("\n", answer_start)
+    #         answer = ques_ans[answer_start:answer_end].strip()
+    #         resultt = f"{question}\n{answer}"
+    #         return result
     
-    return "Failed to extract question and answer from the response."
+    return ques_ans
