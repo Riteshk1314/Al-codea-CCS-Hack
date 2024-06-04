@@ -52,14 +52,6 @@ d) npm run create-build
 Answer: a) npm run build
 """
 
-    
-
-
-
-
-
-
-
 all_feilds=[
     'c',
     'java',
@@ -122,7 +114,7 @@ def object_creation(question,options,answer,field):
 def question_creation(prompt,field):
     field=field
     data=prompt
-    total_questions = [] #the whole string recieved from langchain
+    total_questions = [] 
     question = ''
     word = ''
     is_answer = False
@@ -165,16 +157,7 @@ def question_creation(prompt,field):
         # print(answer)
     
         object_creation(question,options,answer,field)
-        # if not Question.objects.filter(field=Topic.objects.get(topic=field),question=question).exists():
-        #     Question.objects.create(
-        #         field=Topic.objects.get(topic=field),
-        #         question=question,
-        #         option1=options[0],
-        #         option2=options[1],
-        #         option3=options[2],
-        #         option4=options[3],
-        #         answer=answer
-        #     )
+        
    
     
     
@@ -190,7 +173,7 @@ def index(request):
         for i in range(int(count)):
             fields.append(data.get(f'field{i+1}'))
             
-        question_creation(xyz,"dsa")
+        question_creation(xyz,"dsa") #here in xyz ritesh will pass the string of questions from langchain
         
     
     
