@@ -36,11 +36,14 @@ all_feilds=[
 
 def field_creation(request):
     for i in all_feilds:
-        if not topic.objects.filter(topic=i):
-            topic.objects.create(
+        if not Topic.objects.filter(topic=i):
+            Topic.objects.create(
                 topic=i
             )
     return render(request,'index.html')
+
+
+
 
 def question_creation(request):
     field="python"
@@ -50,9 +53,12 @@ def question_creation(request):
     option3='It is used to handle events',
     option4='It is used to run code after a component is mounted to the DOM',
     answer=option4
-    if not question.objects.filter(feild=topic.objects.get(feild=field),question=question):
-        question.objects.create(
-            topic=topic.objects.get(feild=field),
+    
+    
+    
+    if not Question.objects.filter(field=Topic.objects.get(topic=field),question=question).exists():
+        Question.objects.create(
+            field=Topic.objects.get(topic=field),
             question=question,
             option1=option1,
             option2=option2,
@@ -79,7 +85,7 @@ def index(request):
         return redirect('/')
     
     
-    querryset=topic.objects.all()
+    querryset=Topic.objects.all()
     
     context={
         'fields':querryset

@@ -1,8 +1,4 @@
-from django.db import models
 
-# Create your models here.
-from django.db import models
-import uuid
 
 # class QuizQuestionpy(models.Model):
     
@@ -17,17 +13,16 @@ import uuid
 #         return self.question_text
     
 
-
 from django.db import models
 
 # Create your models here.
-class topic(models.Model):
-    feild=models.CharField(max_length=100)
+class Topic(models.Model):
+    topic=models.CharField(max_length=100)
     def __str__(self):
-        return self.feild
+        return self.topic
     
-class question(models.Model):
-    topic=models.ForeignKey(topic,on_delete=models.CASCADE)
+class Question(models.Model):
+    field=models.ForeignKey(Topic,on_delete=models.CASCADE)
     question=models.CharField(max_length=1000)
     option1=models.CharField(max_length=1000)
     option2=models.CharField(max_length=1000)
