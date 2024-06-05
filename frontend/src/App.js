@@ -1,69 +1,57 @@
-// src/App.js
 import React, { useState } from 'react';
-import SelectDropdown from './components/SelectDropdown';
-import QABox from './components/QABox';
-import './App.css';
+import Dashboard from './components/Dashboard';
+import QuizQuestion from './components/QuizQuestion';
+import './index.css';
 
-const App = () => {
-  const [options] = useState(["C++", "C#", "Python"]);
-  const [inputValues, setInputValues] = useState([""]);
-  
-  const handleSelect = (index, value) => {
-    const newValues = [...inputValues];
-    newValues[index] = value;
-    setInputValues(newValues);
+function App() {
+  const [selectedOptions, setSelectedOptions] = useState(['']);
+
+  const handleSelectChange = (index, event) => {
+    const newSelectedOptions = [...selectedOptions];
+    newSelectedOptions[index] = event.target.value;
+    setSelectedOptions(newSelectedOptions);
   };
 
-  const handleAdd = () => {
-    setInputValues([...inputValues, ""]);
-  };
-
-  const handleApprove = () => {
-    console.log('Approved');
-  };
-
-  const handleDiscard = () => {
-    console.log('Discarded');
-  };
-
-  const handleNextQuestion = () => {
-    console.log('Next Question');
-  };
-
-  const handleGenerate = () => {
-    console.log('Generate');
+  const handleAddButtonClick = () => {
+    setSelectedOptions([...selectedOptions, '']);
   };
 
   return (
-    <div className="App">
-      <header className="App-header">
-        {inputValues.map((value, index) => (
-          <div key={index} className="input-container">
-            <SelectDropdown
-              options={options}
-              onSelect={(value) => handleSelect(index, value)}
-            />
-            <input type="text" value={value}
-            placeholder='Topic' readOnly />
+    <div className="app">
+      <aside className="sidebar">
+        <Dashboard />
+      </aside>
+      <main className="main-content">
+        <div className="quiz-container">
+          <div className="select-container">
+            {selectedOptions.map((option, index) => (
+              <div key={index} className="select-box">
+                <select
+                  value=""
+                  onChange={(e) => handleSelectChange(index, e)}
+                >
+                  <option value="" disabled>Select language</option>
+                  <option value="C++">C++</option>
+                  <option value="C#">C#</option>
+                  <option value="Python">Python</option>
+                </select>
+                <input type="text" value={option} readOnly />
+              </div>
+            ))}
+            <button onClick={handleAddButtonClick} className="add-button">Add</button>
           </div>
-        ))}
-        <button onClick={handleAdd}>Add</button>
-      </header>
-      <main>
-        <QABox
-          question="What is React?"
-          answer="React is a JavaScript library for building user interfaces."
-          onApprove={handleApprove}
-          onDiscard={handleDiscard}
-          onNextQuestion={handleNextQuestion}
-          onGenerate={handleGenerate}
-        />
+          <QuizQuestion />
+        </div>
       </main>
     </div>
   );
-};
+}
 
 export default App;
+
+
+
+
 
 
 
