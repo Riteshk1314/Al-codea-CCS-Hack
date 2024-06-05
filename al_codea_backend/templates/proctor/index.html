@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bootstrap demo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+</head>
+
+<body>
+  <h1>Hello, world!</h1>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+
+  <div class="container mt-5">
+    <form method="post">
+      {% csrf_token %}
+      <div class="row g-0 text-center">
+        <div class="col-sm-6 col-md-8">
+          <div class="form-group">
+            <div id="additional-textareas">
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="1" name="field1"></textarea>
+          </div>
+          <input type="hidden" id="textareaCount" name="textarea_count" value="1" />
+        </div>
+        </div>
+        <div class="col-6 col-md-4">
+          <button type="button" class="btn btn-secondary" id="addTextareaButton">
+            Add Topic
+          </button>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary mt-3">Create test</button>
+    </form>
+  </div>
+
+  <script>
+    let textareaCount = 1;
+
+    document
+      .getElementById("addTextareaButton")
+      .addEventListener("click", function () {
+        textareaCount++;
+        var newTextarea = document.createElement("textarea");
+        newTextarea.className = "form-control";
+        newTextarea.rows = 1;
+        newTextarea.name = "field" + textareaCount;
+        
+        // Append the new textarea at the bottom
+        document
+          .getElementById("additional-textareas")
+          .appendChild(newTextarea);
+          
+          // Update the hidden input value
+          document.getElementById("textareaCount").value = textareaCount;
+        });
+      </script>
+      
+      <!-- <img src="http://127.0.0.1:8000/camera/" alt="image" /> -->
+  <div class="container">
+    {% for topic in field %}
+    <div class="row">
+      <div class="col">
+        <h1>{{ topic.name }}</h1>
+      </div>
+      <div class="col">
+        <h2>{{ topic.question }}</h2>
+        <h3>{{ topic.answer }}</h3>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</body>
+
+</html>
