@@ -18,6 +18,11 @@ from langchain_community.document_loaders import PyPDFDirectoryLoader
 ## load the Groq API key
 groq_api_key = os.environ['GROQ_API_KEY']
 
+from llama_index.llms.groq import Groq
+from dotenv import load_dotenv
+import os 
+load_dotenv()
+
 from langchain_community.embeddings import HuggingFaceBgeEmbeddings
 
 model_name = "BAAI/bge-base-en"
@@ -67,11 +72,6 @@ def ques_refined():
 
     print('***********')
 
-    from llama_index.llms.groq import Groq
-    from dotenv import load_dotenv
-    import os 
-    load_dotenv()
-
     ## load the Groq API key
     groq_api_key = os.environ['GROQ_API_KEY']
     llm = Groq(model="mixtral-8x7b-32768", api_key=groq_api_key)
@@ -85,4 +85,5 @@ def ques_refined():
         ChatMessage(role="user", content=f"{answer} check the answers and if the answer is wrong then add none of the above as d) and give it a answer"),
     ]
     xyz = llm.chat(messages)
+    print('xyz')
     return xyz

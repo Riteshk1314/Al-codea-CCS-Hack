@@ -6,8 +6,6 @@ from .ggroq import ques_refined
 #admin
 #admin
 
-xyz=ques_refined()
-
 all_feilds=[
     'c',
     'c++'
