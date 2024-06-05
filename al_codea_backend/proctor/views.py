@@ -20,27 +20,6 @@ from .ggroq import ques_refined
 
 
 
-all_feilds=[
-    'c',
-    'c++'
-    'java',
-    'python',
-    'html',
-    'css',
-    'js',
-    'bootstrap',
-    'sql',
-    'dsa'
-]
-
-def field_creation(request):
-    for i in all_feilds:
-        if not Topic.objects.filter(topic=i):
-            Topic.objects.create(
-                topic=i
-            )
-    return render(request,'proctor/index.html')
-
 
 def object_creation(question,options,answer,field):
     field=field
@@ -48,7 +27,7 @@ def object_creation(question,options,answer,field):
     option1=options[0],
     option2=options[1],
     option3=options[2],
-    option4=options[3],
+    option4='none of these',
     answer=answer
     
     if not Question.objects.filter(field=Topic.objects.get(topic=field),question=question).exists():
@@ -64,7 +43,6 @@ def object_creation(question,options,answer,field):
 
 
 
-
 def question_creation(prompt,field):
     field=field
     data=prompt
@@ -76,19 +54,22 @@ def question_creation(prompt,field):
     for char in data:
         word += char
         if char == ' ':
-            if word == 'Option: ':
+            if word == 'Correct ':
+                # print("000")
                 is_answer = True
-                word = ''
+            word = ''
         if char == '\n':
             if is_answer:
+                # print(1)
+                
                 total_questions.append(question.strip())
                 question = ''
                 is_answer = False
             word = ''
         question += char
-        
-        
-        
+
+
+
 
     for i in total_questions:
         options=[]
@@ -97,28 +78,28 @@ def question_creation(prompt,field):
         lines = i.split('\n')
         
         for line in lines:
-            if line.startswith('a)') or line.startswith('b)') or line.startswith('c)') or line.startswith('d)'):
+            if line.startswith('   a)') or line.startswith('   b)') or line.startswith('   c)') :
                 options.append(line.strip())
-            elif line.startswith('Option:'):
+            elif line.startswith('   Correct'):
+                # print(1)
+
                 answer=line
             else:
-                ques+=line
-                ques+='\n'
-        # The code snippet you provided seems to be defining a function `question_creation` that
-        # processes a given prompt to extract questions, options, and answers. The function iterates
-        # over the prompt data, splits it into individual questions, and then extracts the question,
-        # options, and answer for each question. It then calls the `object_creation` function to
-        # create a new Question object in the database with the extracted information.
+                if not line.startswith('   Option'): 
+                    ques+=line
+                    ques+='\n'
+    
         question=ques
+        # print(question)
         # print(question)
         # for b in options:
         #     print(b)
         # print(answer)
-    
+
         object_creation(question,options,answer,field)
-        
-   
-    
+
+
+
     
    
 

@@ -27,5 +27,5 @@ class Question(models.Model):
     option1=models.CharField(max_length=1000)
     option2=models.CharField(max_length=1000)
     option3=models.CharField(max_length=1000)
-    option4=models.CharField(max_length=1000)
+    option4=models.CharField(max_length=1000,default="none of these")
     answer=models.CharField(max_length=1000)

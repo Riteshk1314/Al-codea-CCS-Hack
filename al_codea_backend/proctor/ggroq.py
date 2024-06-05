@@ -68,7 +68,7 @@ def ques_refined():
     retrieval_chain = create_retrieval_chain(retriever, document_chain)
 
 
-    response=retrieval_chain.invoke({"input":'create 5 random challenging objective type question on python language generate only 3 options out of which only 1 is correct. tell correct option     '})
+    response=retrieval_chain.invoke({"input":'create 10 random challenging objective type question on python language generate only 3 options out of which only 1 is correct. tell correct option     '})
 
     print('***********')
 
