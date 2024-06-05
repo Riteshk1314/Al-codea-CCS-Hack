@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Dashboard from './components/Dashboard';
 import QuizQuestion from './components/QuizQuestion';
 import './index.css';
@@ -7,6 +7,7 @@ function App() {
   const [selectedOptions, setSelectedOptions] = useState(['']);
   const [showDashboard, setShowDashboard] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
+  const sidebarRef = useRef(null);
 
   const handleSelectChange = (index, event) => {
     const newSelectedOptions = [...selectedOptions];
@@ -26,12 +27,30 @@ function App() {
     setShowNotification(!showNotification);
   };
 
+  const handleOutsideClick = (event) => {
+    if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+      setShowDashboard(false);
+    }
+  };
+
+  useEffect(() => {
+    if (showDashboard) {
+      document.addEventListener('mousedown', handleOutsideClick);
+    } else {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, [showDashboard]);
+
   return (
     <div className="app">
       <button className="dashboard-toggle" onClick={toggleDashboard}>
         ☰
       </button>
-      <aside className={`sidebar ${showDashboard ? 'open' : ''}`}>
+      <aside ref={sidebarRef} className={`sidebar ${showDashboard ? 'open' : ''}`}>
         <Dashboard />
       </aside>
       <main className={`main-content ${showDashboard ? 'with-sidebar' : ''}`}>
@@ -48,7 +67,7 @@ function App() {
             {selectedOptions.map((option, index) => (
               <div key={index} className="select-box">
                 <select
-                  value=""
+                  value={option}
                   onChange={(e) => handleSelectChange(index, e)}
                 >
                   <option value="" disabled>Select language</option>
@@ -69,6 +88,10 @@ function App() {
 }
 
 export default App;
+
+
+
+
 
 
 
