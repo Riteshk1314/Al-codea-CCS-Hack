@@ -39,7 +39,7 @@ def field_creation(request):
             Topic.objects.create(
                 topic=i
             )
-    return render(request,'index.html')
+    return render(request,'proctor/index.html')
 
 
 def object_creation(question,options,answer,field):
@@ -140,7 +140,7 @@ def index(request):
         'fields':querryset
     }
     
-    return render(request, 'index.html', context)
+    return render(request, 'proctor/index.html', context)
 
 
 
