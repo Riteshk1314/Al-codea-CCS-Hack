@@ -1,8 +1,8 @@
 
-from django.urls import path
-from . import views
+# from django.urls import path
+# from . import views
 
-urlpatterns = [
+# urlpatterns = [
     
-    path('activate/<uidb64>/<token>', views.activate, name='activate'),
-]
+#     path('activate/<uidb64>/<token>', views.activate, name='activate'),
+# ]
