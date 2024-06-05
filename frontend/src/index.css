@@ -3,15 +3,17 @@ body {
   margin: 0;
   padding: 0;
   height: 100vh;
-  background-color: #f0f2f5;
-  color: #333;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
+  background-color: #f0f2f5;
+  color: #333;
 }
 
 .app {
   display: flex;
-  flex: 1;
+  height: 100%;
+  width: 100%;
   overflow: hidden;
 }
 
@@ -20,10 +22,33 @@ body {
   background: #001529;
   color: #fff;
   padding: 20px;
-  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: fixed;
+  left: -250px;
+  top: 0;
+  bottom: 0;
+  transition: left 0.3s ease-in-out;
+  z-index: 1000;
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.dashboard-toggle {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1001;
+  background: #001529;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
 }
 
 .dashboard h2 {
@@ -63,11 +88,35 @@ body {
 .main-content {
   flex: 1;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: #fff;
   padding: 20px;
   box-sizing: border-box;
+  margin-left: 0;
+  transition: margin-left 0.3s ease-in-out;
+}
+
+.main-content.with-sidebar {
+  margin-left: 250px;
+}
+
+.notification-icon {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  font-size: 1.5em;
+  cursor: pointer;
+}
+
+.notification-popup {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 10px;
 }
 
 .quiz-container {
@@ -76,7 +125,7 @@ body {
   padding: 20px;
   border-radius: 10px;
   background: #fff;
-  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
 .select-container {
@@ -225,13 +274,19 @@ body {
 
 @media (max-width: 768px) {
   .sidebar {
-    width: 100%;
-    height: auto;
-    padding: 10px;
+    left: -250px;
+  }
+
+  .sidebar.open {
+    left: 0;
   }
 
   .main-content {
-    padding: 10px;
+    margin-left: 0;
+  }
+
+  .main-content.with-sidebar {
+    margin-left: 0;
   }
 
   .quiz-container {
@@ -264,10 +319,14 @@ body {
   .quiz-question p {
     font-size: 1em;
   }
- 
-    .quiz-question textarea {
-      height: 80px;
-    }
+
+  .quiz-question img {
+    margin: 10px 0;
   }
+
+  .quiz-question textarea {
+    height: 80px;
+  }
+}
 
 

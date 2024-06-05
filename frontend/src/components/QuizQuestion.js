@@ -14,6 +14,7 @@ function QuizQuestion() {
 
   const handleApproveClick = () => {
     setIsEditing(false);
+    // Implement the logic to approve the answer
   };
 
   const handleDiscardClick = () => {
@@ -25,8 +26,9 @@ function QuizQuestion() {
     <div className="quiz-question">
       <h3>Question 1/5</h3>
       <p>
-        What is React?
+        Guy Bailey, Roy Hackett and Paul Stephenson made history in 1963, as part of a protest against a bus company that refused to employ black and Asian drivers in which UK city?
       </p>
+      <img src="path/to/image.jpg" alt="History" />
       <form>
         <textarea
           value={answer}
@@ -55,5 +57,6 @@ function QuizQuestion() {
 }
 
 export default QuizQuestion;
+
 
 

@@ -5,6 +5,8 @@ import './index.css';
 
 function App() {
   const [selectedOptions, setSelectedOptions] = useState(['']);
+  const [showDashboard, setShowDashboard] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
 
   const handleSelectChange = (index, event) => {
     const newSelectedOptions = [...selectedOptions];
@@ -16,12 +18,31 @@ function App() {
     setSelectedOptions([...selectedOptions, '']);
   };
 
+  const toggleDashboard = () => {
+    setShowDashboard(!showDashboard);
+  };
+
+  const toggleNotification = () => {
+    setShowNotification(!showNotification);
+  };
+
   return (
     <div className="app">
-      <aside className="sidebar">
+      <button className="dashboard-toggle" onClick={toggleDashboard}>
+        ☰
+      </button>
+      <aside className={`sidebar ${showDashboard ? 'open' : ''}`}>
         <Dashboard />
       </aside>
-      <main className="main-content">
+      <main className={`main-content ${showDashboard ? 'with-sidebar' : ''}`}>
+        <div className="notification-icon" onClick={toggleNotification}>
+          🔔
+          {showNotification && (
+            <div className="notification-popup">
+              <p>No new notifications</p>
+            </div>
+          )}
+        </div>
         <div className="quiz-container">
           <div className="select-container">
             {selectedOptions.map((option, index) => (
@@ -48,6 +69,9 @@ function App() {
 }
 
 export default App;
+
+
+
 
 
 

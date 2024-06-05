@@ -4,7 +4,7 @@ function Dashboard() {
   return (
     <div className="dashboard">
       <div>
-        <h2>Quiz</h2>
+        <h2>Quiz Time</h2>
         <nav>
           <ul>
             <li>Dashboard</li>
@@ -19,5 +19,6 @@ function Dashboard() {
 }
 
 export default Dashboard;
+
 
 
