@@ -85,5 +85,4 @@ def ques_refined():
         ChatMessage(role="user", content=f"{answer} check the answers and if the answer is wrong then add none of the above as d) and give it a answer"),
     ]
     xyz = llm.chat(messages)
-    print(xyz)
     return xyz
