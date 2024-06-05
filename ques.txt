@@ -1,0 +1,44 @@
+1. What is the purpose of the `componentDidMount()` method in the context of React?
+a) It is used to render a component
+b) It is used to update a component
+c) It is used to handle events
+d) It is used to run code after a component is mounted to the DOM
+
+Answer: d) It is used to run code after a component is mounted to the DOM
+
+2. Which of the following is used to pass data from a parent component to a child component in React?
+a) state
+b) props
+c) refs
+d) keys
+
+Answer: b) props
+
+3. What is the role of the `key` prop in the following code snippet?
+```php
+<tr key={index}>
+  ...
+</tr>
+```
+a) It is used to identify the row uniquely
+b) It is used to style the row
+c) It is used to handle events on the row
+d) It is used to pass data to the row
+
+Answer: a) It is used to identify the row uniquely
+
+4. Which of the following is used to remove an item from an array in the `removeCharacter()` method?
+a) filter()
+b) map()
+c) reduce()
+d) forEach()
+
+Answer: a) filter()
+
+5. Which of the following is used to compile and create a production build of a React application?
+a) npm run build
+b) npm run compile
+c) npm run production
+d) npm run create-build
+
+Answer: a) npm run build
