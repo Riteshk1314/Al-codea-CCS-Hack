@@ -1,0 +1,77 @@
+/* src/components/LoginPage.css */
+
+.login-container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .left-half {
+    position: relative; /* Add relative positioning */
+    flex: 1;
+    background-color: rgb(0, 0, 0);
+  }
+  
+  .learn-code-collaborate {
+    position: absolute;
+    bottom: 5%; /* Adjust as needed */
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 28px;
+    color: #39b9bc;
+  }
+  
+  .left-half img {
+    padding-top: 25%;
+    width: 70%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .right-half {
+    flex: 1;
+    display: flex;
+    flex-direction: column; /* Change to column layout */
+    align-items: center;
+    justify-content: center; /* Center vertically */
+    background-color: white;
+    padding: 20px;
+  }
+  
+  .right-half form {
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .right-half h2 {
+    text-align: center;
+    margin-bottom: 20px; /* Increase margin */
+  }
+  
+  .right-half form div {
+    margin-bottom: 15px;
+  }
+  
+  .right-half label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .right-half input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+  
+  .right-half button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .right-half button:hover {
+    background-color: #0056b3;
+  }
