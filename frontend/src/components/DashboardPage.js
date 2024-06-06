@@ -151,7 +151,6 @@ function DashboardPage() {
               </div>
             </form>
           </div>
-          );
         </div>
       </main>
     </div>
