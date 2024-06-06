@@ -1,0 +1,12 @@
+/* Webcam.css */
+.webcam-video {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  width: 200px; /* Adjust the size as needed */
+  height: 150px; /* Maintain aspect ratio as needed */
+  border: 2px solid #ccc; /* Optional: add a border */
+  border-radius: 10px; /* Optional: add rounded corners */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Optional: add a shadow for better visibility */
+  z-index: 1000; /* Ensure it stays on top */
+}
