@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import './StudentPage.css';
+import React, { useState, useEffect } from "react";
+import "./StudentPage.css";
 
 const StudentPage = () => {
   const [timeLeft, setTimeLeft] = useState(900); // 15 minutes timer
@@ -9,14 +9,14 @@ const StudentPage = () => {
     2: { seen: false, answered: false, review: false },
     3: { seen: false, answered: false, review: false },
     4: { seen: false, answered: false, review: false },
-    5: { seen: false, answered: false, review: false }
+    5: { seen: false, answered: false, review: false },
   });
   const [selectedAnswers, setSelectedAnswers] = useState({
-    1: '',
-    2: '',
-    3: '',
+    1: "",
+    2: "",
+    3: "",
     4: [],
-    5: []
+    5: [],
   });
   const [isNavOpen, setIsNavOpen] = useState(false);
 
@@ -31,7 +31,7 @@ const StudentPage = () => {
     setQuestionStatus((prevState) => ({
       ...prevState,
       [currentQuestion]: { ...prevState[currentQuestion], seen: true },
-      [questionNumber]: { ...prevState[questionNumber], seen: true }
+      [questionNumber]: { ...prevState[questionNumber], seen: true },
     }));
     setCurrentQuestion(questionNumber);
     setIsNavOpen(false);
@@ -40,18 +40,21 @@ const StudentPage = () => {
   const handleMarkForReview = () => {
     setQuestionStatus((prevState) => ({
       ...prevState,
-      [currentQuestion]: { ...prevState[currentQuestion], review: !prevState[currentQuestion].review }
+      [currentQuestion]: {
+        ...prevState[currentQuestion],
+        review: !prevState[currentQuestion].review,
+      },
     }));
   };
 
   const handleOptionChange = (questionNumber, answer) => {
     setSelectedAnswers((prevState) => ({
       ...prevState,
-      [questionNumber]: answer
+      [questionNumber]: answer,
     }));
     setQuestionStatus((prevState) => ({
       ...prevState,
-      [questionNumber]: { ...prevState[questionNumber], answered: true }
+      [questionNumber]: { ...prevState[questionNumber], answered: true },
     }));
   };
 
@@ -60,7 +63,7 @@ const StudentPage = () => {
       handleQuestionChange(currentQuestion + 1);
     }
   };
-  
+
   const handlePreviousQuestion = () => {
     if (currentQuestion > 1) {
       handleQuestionChange(currentQuestion - 1);
@@ -73,30 +76,33 @@ const StudentPage = () => {
       if (currentAnswers.includes(answer)) {
         return {
           ...prevState,
-          [questionNumber]: currentAnswers.filter((a) => a !== answer)
+          [questionNumber]: currentAnswers.filter((a) => a !== answer),
         };
       } else {
         return {
           ...prevState,
-          [questionNumber]: [...currentAnswers, answer]
+          [questionNumber]: [...currentAnswers, answer],
         };
       }
     });
     setQuestionStatus((prevState) => ({
       ...prevState,
-      [questionNumber]: { ...prevState[questionNumber], answered: true }
+      [questionNumber]: { ...prevState[questionNumber], answered: true },
     }));
   };
 
   const handleReviewToggle = (questionNumber) => {
     setQuestionStatus((prevState) => ({
       ...prevState,
-      [questionNumber]: { ...prevState[questionNumber], review: !prevState[questionNumber].review }
+      [questionNumber]: {
+        ...prevState[questionNumber],
+        review: !prevState[questionNumber].review,
+      },
     }));
   };
 
   const handleSubmit = () => {
-    alert('Test submitted!');
+    alert("Test submitted!");
   };
 
   const toggleNav = () => {
@@ -105,35 +111,43 @@ const StudentPage = () => {
 
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
-return (
-  <div className="test-container">
-    <button className="nav-toggle" onClick={toggleNav}>
-      {isNavOpen ? 'Close Navigation' : 'Open Navigation'}
-    </button>
-      <div className={`question-section ${isNavOpen ? 'nav-open' : ''}`}>
+  return (
+    <div className="test-container">
+      <button className="nav-toggle" onClick={toggleNav}>
+        {isNavOpen ? "Close Navigation" : "Open Navigation"}
+      </button>
+      <div className={`question-section ${isNavOpen ? "nav-open" : ""}`}>
+        <ul>
+          <li>{details[currentQuestion].question}</li>
+          <li>{details[currentQuestion].option1}</li>
+          <li>{details[currentQuestion].option2}</li>
+          <li>{details[currentQuestion].option3}</li>
+          <li>{details[currentQuestion].option4}</li>
+          {/* <li>{details[currentQuestion].answer}</li> */}
+        </ul>
         {currentQuestion === 1 && (
           <div className="question">
             <label>1. Question one text here?</label>
             <div className="options">
               <div>
-                <input 
-                  type="radio" 
-                  id="q1a1" 
-                  name="q1" 
-                  value="A" 
-                  checked={selectedAnswers[1] === 'A'} 
-                  onChange={() => handleOptionChange(1, 'A')}
+                <input
+                  type="radio"
+                  id="q1a1"
+                  name="q1"
+                  value="A"
+                  checked={selectedAnswers[1] === "A"}
+                  onChange={() => handleOptionChange(1, "A")}
                 />
                 <label htmlFor="q1a1">Option A</label>
               </div>
               <div>
-                <input 
-                  type="radio" 
-                  id="q1a2" 
-                  name="q1" 
-                  value="B" 
-                  checked={selectedAnswers[1] === 'B'} 
-                  onChange={() => handleOptionChange(1, 'B')}
+                <input
+                  type="radio"
+                  id="q1a2"
+                  name="q1"
+                  value="B"
+                  checked={selectedAnswers[1] === "B"}
+                  onChange={() => handleOptionChange(1, "B")}
                 />
                 <label htmlFor="q1a2">Option B</label>
               </div>
@@ -145,24 +159,24 @@ return (
             <label>2. Question two text here?</label>
             <div className="options">
               <div>
-                <input 
-                  type="radio" 
-                  id="q2a1" 
-                  name="q2" 
-                  value="A" 
-                  checked={selectedAnswers[2] === 'A'} 
-                  onChange={() => handleOptionChange(2, 'A')}
+                <input
+                  type="radio"
+                  id="q2a1"
+                  name="q2"
+                  value="A"
+                  checked={selectedAnswers[2] === "A"}
+                  onChange={() => handleOptionChange(2, "A")}
                 />
                 <label htmlFor="q2a1">Option A</label>
               </div>
               <div>
-                <input 
-                  type="radio" 
-                  id="q2a2" 
-                  name="q2" 
-                  value="B" 
-                  checked={selectedAnswers[2] === 'B'} 
-                  onChange={() => handleOptionChange(2, 'B')}
+                <input
+                  type="radio"
+                  id="q2a2"
+                  name="q2"
+                  value="B"
+                  checked={selectedAnswers[2] === "B"}
+                  onChange={() => handleOptionChange(2, "B")}
                 />
                 <label htmlFor="q2a2">Option B</label>
               </div>
@@ -174,24 +188,24 @@ return (
             <label>3. Question three text here?</label>
             <div className="options">
               <div>
-                <input 
-                  type="radio" 
-                  id="q3a1" 
-                  name="q3" 
-                  value="A" 
-                  checked={selectedAnswers[3] === 'A'} 
-                  onChange={() => handleOptionChange(3, 'A')}
+                <input
+                  type="radio"
+                  id="q3a1"
+                  name="q3"
+                  value="A"
+                  checked={selectedAnswers[3] === "A"}
+                  onChange={() => handleOptionChange(3, "A")}
                 />
                 <label htmlFor="q3a1">Option A</label>
               </div>
               <div>
-                <input 
-                  type="radio" 
-                  id="q3a2" 
-                  name="q3" 
-                  value="B" 
-                  checked={selectedAnswers[3] === 'B'} 
-                  onChange={() => handleOptionChange(3, 'B')}
+                <input
+                  type="radio"
+                  id="q3a2"
+                  name="q3"
+                  value="B"
+                  checked={selectedAnswers[3] === "B"}
+                  onChange={() => handleOptionChange(3, "B")}
                 />
                 <label htmlFor="q3a2">Option B</label>
               </div>
@@ -203,22 +217,22 @@ return (
             <label>4. Question four text here?</label>
             <div className="options">
               <div>
-                <input 
-                  type="checkbox" 
-                  id="q4a1" 
-                  value="A" 
-                  checked={selectedAnswers[4].includes('A')} 
-                  onChange={() => handleCheckboxChange(4, 'A')}
+                <input
+                  type="checkbox"
+                  id="q4a1"
+                  value="A"
+                  checked={selectedAnswers[4].includes("A")}
+                  onChange={() => handleCheckboxChange(4, "A")}
                 />
                 <label htmlFor="q4a1">Option A</label>
               </div>
               <div>
-                <input 
-                  type="checkbox" 
-                  id="q4a2" 
-                  value="B" 
-                  checked={selectedAnswers[4].includes('B')} 
-                  onChange={() => handleCheckboxChange(4, 'B')}
+                <input
+                  type="checkbox"
+                  id="q4a2"
+                  value="B"
+                  checked={selectedAnswers[4].includes("B")}
+                  onChange={() => handleCheckboxChange(4, "B")}
                 />
                 <label htmlFor="q4a2">Option B</label>
               </div>
@@ -230,22 +244,22 @@ return (
             <label>5. Question five text here?</label>
             <div className="options">
               <div>
-                <input 
-                  type="checkbox" 
-                  id="q5a1" 
-                  value="A" 
-                  checked={selectedAnswers[5].includes('A')} 
-                  onChange={() => handleCheckboxChange(5, 'A')}
+                <input
+                  type="checkbox"
+                  id="q5a1"
+                  value="A"
+                  checked={selectedAnswers[5].includes("A")}
+                  onChange={() => handleCheckboxChange(5, "A")}
                 />
                 <label htmlFor="q5a1">Option A</label>
               </div>
               <div>
-                <input 
-                  type="checkbox" 
-                  id="q5a2" 
-                  value="B" 
-                  checked={selectedAnswers[5].includes('B')} 
-                  onChange={() => handleCheckboxChange(5, 'B')}
+                <input
+                  type="checkbox"
+                  id="q5a2"
+                  value="B"
+                  checked={selectedAnswers[5].includes("B")}
+                  onChange={() => handleCheckboxChange(5, "B")}
                 />
                 <label htmlFor="q5a2">Option B</label>
               </div>
@@ -254,16 +268,16 @@ return (
         )}
 
         <div className="next-prev-buttons">
-          <button 
-            className="next-prev-button" 
-            onClick={handlePreviousQuestion} 
+          <button
+            className="next-prev-button"
+            onClick={handlePreviousQuestion}
             disabled={currentQuestion === 1}
           >
             Previous Question
           </button>
-          <button 
-            className="next-prev-button" 
-            onClick={handleNextQuestion} 
+          <button
+            className="next-prev-button"
+            onClick={handleNextQuestion}
             disabled={currentQuestion === 5}
           >
             Next Question
@@ -277,18 +291,31 @@ return (
           <span className="time-left">{timeLeft} seconds</span>
         </div>
         <button className="review-button" onClick={handleMarkForReview}>
-          {questionStatus[currentQuestion].review ? 'Unmark Review' : 'Mark for Review'}
+          {questionStatus[currentQuestion].review
+            ? "Unmark Review"
+            : "Mark for Review"}
         </button>
-        <button className="submit-button" onClick={handleSubmit}>Submit Test</button>
+        <button className="submit-button" onClick={handleSubmit}>
+          Submit Test
+        </button>
         <div className="navigation-buttons">
           {Object.keys(questionStatus).map((questionNumber) => (
-            <button 
-              key={questionNumber} 
-              className={`nav-button ${questionStatus[questionNumber].answered ? 'answered' : ''} ${questionStatus[questionNumber].seen ? 'seen' : ''} ${questionStatus[questionNumber].review ? 'review' : ''} ${currentQuestion === parseInt(questionNumber) ? 'active' : ''}`} 
+            <button
+              key={questionNumber}
+              className={`nav-button ${
+                questionStatus[questionNumber].answered ? "answered" : ""
+              } ${questionStatus[questionNumber].seen ? "seen" : ""} ${
+                questionStatus[questionNumber].review ? "review" : ""
+              } ${
+                currentQuestion === parseInt(questionNumber) ? "active" : ""
+              }`}
               onClick={() => handleQuestionChange(parseInt(questionNumber))}
             >
               {questionNumber}
-              {questionStatus[questionNumber].answered && questionStatus[questionNumber].review && <span className="review-dot"></span>}
+              {questionStatus[questionNumber].answered &&
+                questionStatus[questionNumber].review && (
+                  <span className="review-dot"></span>
+                )}
             </button>
           ))}
         </div>
@@ -350,15 +377,3 @@ return (
 // }
 
 export default StudentPage;
-
-
-
-
-
-
-
-
-
-
-
-
