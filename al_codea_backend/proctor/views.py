@@ -13,10 +13,14 @@ from .RAG import ques_maker
 from django.shortcuts import render,redirect
 from .models import *
 from .ggroq import ques_refined
+from rest_framework import generics
+from .serializer import ProctorSerializer
+from rest_framework.response import Response
+
 # Create your views here.
 
-#admin
-#admin
+#ritesh
+#ritesh
 
 
 
@@ -231,5 +235,18 @@ def index(request):
 
 
 
-
-
+class ReactView(generics.ListCreateAPIView):
+    queryset = Question.objects.all()
+    serializer_class = ProctorSerializer
+    def get(self, request):
+        queryset = super().get_queryset()
+        name = self.request.query_params.get('name')
+        if name:
+            queryset = queryset.filter(field=name)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+    def post(self, request):
+        serializer = ProctorSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
