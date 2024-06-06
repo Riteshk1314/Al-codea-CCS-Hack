@@ -46,6 +46,7 @@ EXTERNAL_APPS = [
     'rest_framework',
     'corsheaders',
     'proctor',
+    'student',
 ]
 INSTALLED_APPS+=EXTERNAL_APPS
 

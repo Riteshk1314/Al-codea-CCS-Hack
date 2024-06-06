@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginPage from './components/LoginPage';
 import DashboardPage from './components/DashboardPage';
 import StudentPage from './components/StudentPage';
+import CameraFeed from './components/CameraFeed';
 import axios from 'axios';
 
 class App extends React.Component {
@@ -31,6 +32,8 @@ class App extends React.Component {
           <Route path="/" element={<LoginPage />} />
           <Route path="/dashboard" element={<DashboardPage details={details} />} />
           <Route path="/student" element={<StudentPage details={details} />} />
+          <Route path="/camera" element={<CameraFeed />} />
+
         </Routes>
       </Router>
     );

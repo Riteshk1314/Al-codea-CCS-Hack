@@ -31,8 +31,8 @@ function DashboardPage({ details }) {
       setShowDashboard(false);
     }
   };
-  
-  const handleNextQuestion = () => {
+
+  const handleNextClick = () => {
     if (currentQuestionIndex < details.length - 1) {
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
     }
@@ -47,14 +47,15 @@ function DashboardPage({ details }) {
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
     }
   };
+
   const handleDiscardClick = () => {
     if (currentQuestionIndex < details.length - 1) {
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
     }
   };
-  const handleNextClick = () => {
-    if (currentQuestionIndex < details.length - 1) {
-      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+  const handlePreviousClick = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
     }
   };
 
@@ -181,6 +182,9 @@ function DashboardPage({ details }) {
                   onClick={handleNextClick}
                 >
                   Next Question
+                </button>
+                <button type="button" onClick={handlePreviousClick} className="add-button">
+                  Previous Question
                 </button>
                 {/* Add other buttons as needed */}
               </div>

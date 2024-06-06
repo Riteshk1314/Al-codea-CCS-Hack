@@ -69,40 +69,122 @@
 
 
 
-import cv2
-from django.shortcuts import render,redirect
-import threading
-from django.http import StreamingHttpResponse
+# import cv2
+# from django.shortcuts import render,redirect
+# import threading
+# from django.http import StreamingHttpResponse
 
-def camera(request):
-    try:
-        cam=VideoCamera()
-        return StreamingHttpResponse(gen(cam),content_type="multipart/x-mixed-replace;boundary=frame")
-    except:
-        pass
-    return render(request,'index.html')
+# def camera(request):
+#     try:
+#         cam=VideoCamera()
+#         return StreamingHttpResponse(gen(cam),content_type="multipart/x-mixed-replace;boundary=frame")
+#     except:
+#         pass
+#     return render(request,'index.html')
 
-class VideoCamera(object):
-    def __init__(self):
-        self.video = cv2.VideoCapture(0)
-        (self.grabbed, self.frame) = self.video.read()
-        threading.Thread(target=self.update, args=()).start()
+# class VideoCamera(object):
+#     def __init__(self):
+#         self.video = cv2.VideoCapture(0)
+#         (self.grabbed, self.frame) = self.video.read()
+#         threading.Thread(target=self.update, args=()).start()
     
-    def __del__(self):
-        self.video.release()
+#     def __del__(self):
+#         self.video.release()
     
-    def get_frame(self):
-        image = self.frame
-        _, jpeg = cv2.imencode('.jpg', image)
-        return jpeg.tobytes()
+#     def get_frame(self):
+#         image = self.frame
+#         _, jpeg = cv2.imencode('.jpg', image)
+#         return jpeg.tobytes()
     
-    def update(self):
-        while True:
-            (self.grabbed, self.frame) = self.video.read()
+#     def update(self):
+#         while True:
+#             (self.grabbed, self.frame) = self.video.read()
             
+# def gen(camera):
+#     while True:
+#         frame = camera.get_frame()
+#         yield (b'--frame\r\n'
+#                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+
+
+
+
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+import numpy as np
+import cv2
+
+# Define a global variable to store the camera object
+video_camera = None
+
+# Define a global variable to store the video stream generator
+video_stream_generator = None
+
+# Initialize the camera and generator
+def initialize_camera(request):
+    global video_camera, video_stream_generator
+    video_camera = cv2.VideoCapture(0)
+    video_stream_generator = gen(video_camera)
+
+# Release the camera
+def release_camera():
+    global video_camera
+    if video_camera:
+        video_camera.release()
+
+# Receive frames from the frontend and return the video stream
+@csrf_exempt
+def video_feed(request):
+    if request.method == 'GET':
+        return HttpResponse(video_stream(), content_type='multipart/x-mixed-replace; boundary=frame')
+
+# Generator function to continuously yield video frames
 def gen(camera):
     while True:
-        frame = camera.get_frame()
+        success, frame = camera.read()
+        if not success:
+            break
+        _, jpeg = cv2.imencode('.jpg', frame)
+        frame_bytes = jpeg.tobytes()
         yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+               b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n\r\n')
 
+# Return video stream as a byte string
+def video_stream():
+    global video_stream_generator
+    for frame in video_stream_generator:
+        yield frame
+
+# Initialize the camera when the Django app starts
+
+
+
+from rest_framework import generics
+from rest_framework.response import Response
+from .serializer import FrameSerializer
+
+class CameraFrameView(generics.CreateAPIView):
+    serializer_class = FrameSerializer
+
+    def post(self, request, *args, **kwargs):
+        # Check if 'frame' is present in the request
+        if 'frame' not in request.FILES:
+            return Response({'error': 'No frame found'}, status=400)
+
+        # Extract the frame file from the request data
+        frame_file = request.FILES['frame']
+
+        # Create a serializer instance with the frame data
+        serializer = self.get_serializer(data={'frame': frame_file})
+
+        # Validate the serializer
+        if serializer.is_valid():
+            # Save the frame instance
+            serializer.save()
+
+            # Return success response
+            return Response({'message': 'Frame received and saved successfully'}, status=201)
+        else:
+            # Return error response if serializer is not valid
+            return Response(serializer.errors, status=400)

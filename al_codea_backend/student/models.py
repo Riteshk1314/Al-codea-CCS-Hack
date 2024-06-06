@@ -10,3 +10,14 @@
 #     REQUIRED_FIELDS = []
 
 #     objects = CustomUserManager()
+
+
+# Assuming this is your student/models.py file
+
+from django.db import models
+
+class Frame(models.Model):
+    frame = models.ImageField(upload_to='frames/')  # Adjust the upload path as needed
+
+    def __str__(self):
+        return self.frame.name  # Return the filename as a string representation
