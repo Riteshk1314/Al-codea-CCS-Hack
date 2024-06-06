@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './StudentPage.css';
+import CameraFeed from './CameraFeed';
 
 const StudentPage = ({ details }) => {
   const [timeLeft, setTimeLeft] = useState(900); // 15 minutes timer
@@ -18,7 +19,6 @@ const StudentPage = ({ details }) => {
     4: [],
     5: []
   });
-  const [isNavOpen, setIsNavOpen] = useState(false);
 
   useEffect(() => {
     if (timeLeft > 0) {
@@ -34,7 +34,6 @@ const StudentPage = ({ details }) => {
       [questionNumber]: { ...prevState[questionNumber], seen: true }
     }));
     setCurrentQuestion(questionNumber);
-    setIsNavOpen(false); // Close navigation when a question is selected
   };
 
   const handleMarkForReview = () => {
@@ -88,16 +87,58 @@ const StudentPage = ({ details }) => {
     // Submission logic here
   };
 
+  const [isNavOpen, setIsNavOpen] = useState(false);
+
   const handleToggleNav = () => {
-    console.log("Toggling navigation. Current state: ", isNavOpen);
     setIsNavOpen(!isNavOpen);
   };
 
   return (
     <div className="test-container">
       <button className="nav-toggle" onClick={handleToggleNav}>
-        {isNavOpen ? 'Close Navigation' : 'Open Navigation'}
+        {isNavOpen ? '☰' : '☰'}
       </button>
+      <div className={`right-section ${isNavOpen ? 'open' : ''}`}>
+        <div className="camera-feed-container">
+          <CameraFeed />
+        </div>
+        <div className="info-box">
+          <label>Time Left: </label>
+          <span className="time-left">{timeLeft} seconds</span>
+          <div className="info-item">
+            <div className="info-color unanswered"></div>
+            <span>Unseen/Unanswered</span>
+          </div>
+          <div className="info-item">
+            <div className="info-color answered"></div>
+            <span>Answered</span>
+          </div>
+          <div className="info-item">
+            <div className="info-color review"></div>
+            <span>Marked for Review</span>
+          </div>
+          <div className="info-item">
+            <div className="info-color review-answered"></div>
+            <span>Marked for Review (Answered)</span>
+          </div>
+        </div>
+        <div className="navigation-buttons">
+          {Object.keys(questionStatus).map((questionNumber) => (
+            <button
+              key={questionNumber}
+              className={`nav-button ${questionStatus[questionNumber].answered ? 'answered' : ''} ${questionStatus[questionNumber].seen ? 'seen' : ''} ${questionStatus[questionNumber].review ? 'review' : ''} ${currentQuestion === parseInt(questionNumber) ? 'active' : ''}`}
+              onClick={() => handleQuestionChange(parseInt(questionNumber))}
+            >
+              {questionNumber}
+              {questionStatus[questionNumber].answered && questionStatus[questionNumber].review && <span className="review-dot"></span>}
+            </button>
+          ))}
+        </div>
+        <button className="review-button" onClick={handleMarkForReview}>
+          {questionStatus[currentQuestion].review ? 'Unmark Review' : 'Mark for Review'}
+        </button>
+        <button className="submit-button" onClick={handleSubmit}>Submit Test</button>
+      </div>
       <div className={`question-section ${isNavOpen ? 'nav-open' : ''}`}>
         {currentQuestion === 1 && (
           <div className="question">
@@ -194,6 +235,7 @@ const StudentPage = ({ details }) => {
                 <input
                   type="checkbox"
                   id="q4a1"
+                  name="q4"
                   value="A"
                   checked={selectedAnswers[4].includes('A')}
                   onChange={() => handleCheckboxChange(4, 'A')}
@@ -204,6 +246,7 @@ const StudentPage = ({ details }) => {
                 <input
                   type="checkbox"
                   id="q4a2"
+                  name="q4"
                   value="B"
                   checked={selectedAnswers[4].includes('B')}
                   onChange={() => handleCheckboxChange(4, 'B')}
@@ -221,6 +264,7 @@ const StudentPage = ({ details }) => {
                 <input
                   type="checkbox"
                   id="q5a1"
+                  name="q5"
                   value="A"
                   checked={selectedAnswers[5].includes('A')}
                   onChange={() => handleCheckboxChange(5, 'A')}
@@ -231,6 +275,7 @@ const StudentPage = ({ details }) => {
                 <input
                   type="checkbox"
                   id="q5a2"
+                  name="q5"
                   value="B"
                   checked={selectedAnswers[5].includes('B')}
                   onChange={() => handleCheckboxChange(5, 'B')}
@@ -240,73 +285,22 @@ const StudentPage = ({ details }) => {
             </div>
           </div>
         )}
-
-        <div className="next-prev-buttons">
-          <button
-            className="next-prev-button"
-            onClick={handlePreviousQuestion}
-            disabled={currentQuestion === 1}
-          >
-            Previous Question
+        <div className="navigation">
+          <button className="previous-button" onClick={handlePreviousQuestion} disabled={currentQuestion === 1}>
+            Previous
           </button>
-          <button
-            className="next-prev-button"
-            onClick={handleNextQuestion}
-            disabled={currentQuestion === 5}
-          >
-            Next Question
+          <button className="next-button" onClick={handleNextQuestion} disabled={currentQuestion === 5}>
+            Next
           </button>
         </div>
       </div>
-
-      <div className="right-section">
-        <div className="timer">
-          <label>Time Left: </label>
-          <span className="time-left">{timeLeft} seconds</span>
-        </div>
-        <button className="review-button" onClick={handleMarkForReview}>
-          {questionStatus[currentQuestion].review ? 'Unmark Review' : 'Mark for Review'}
-        </button>
-        <button className="submit-button" onClick={handleSubmit}>Submit Test</button>
-        <div className="navigation-buttons">
-          {Object.keys(questionStatus).map((questionNumber) => (
-            <button
-              key={questionNumber}
-              className={`nav-button ${questionStatus[questionNumber].answered ? 'answered' : ''} ${questionStatus[questionNumber].seen ? 'seen' : ''} ${questionStatus[questionNumber].review ? 'review' : ''} ${currentQuestion === parseInt(questionNumber) ? 'active' : ''}`}
-              onClick={() => handleQuestionChange(parseInt(questionNumber))}
-            >
-              {questionNumber}
-              {questionStatus[questionNumber].answered && questionStatus[questionNumber].review && <span className="review-dot"></span>}
-            </button>
-          ))}
-        </div>
-        <div className="info-box">
-          <div className="info-item">
-            <div className="info-color unanswered"></div>
-            <span>Unseen/Unanswered</span>
-          </div>
-          <div className="info-item">
-            <div className="info-color answered"></div>
-            <span>Answered</span>
-          </div>
-          <div className="info-item">
-            <div className="info-color review"></div>
-            <span>Marked for Review</span>
-          </div>
-          <div className="info-item">
-            <div className="info-color review-answered"></div>
-            <span>Marked for Review (Answered)</span>
-          </div>
-        </div>
-      </div>
-      <button className="nav-toggle" onClick={handleToggleNav}>
-        {isNavOpen ? 'Close Navigation' : 'Open Navigation'}
-      </button>
     </div>
   );
 };
 
 export default StudentPage;
+
+
 
 
 
