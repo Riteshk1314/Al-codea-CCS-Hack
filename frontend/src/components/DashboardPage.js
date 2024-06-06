@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./DashboardPage.css";
 
-function DashboardPage({details}) {
-
+function DashboardPage({ details }) {
   const [selectedOptions, setSelectedOptions] = useState([""]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [showDashboard, setShowDashboard] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const sidebarRef = useRef(null);
@@ -31,6 +31,32 @@ function DashboardPage({details}) {
       setShowDashboard(false);
     }
   };
+  
+  const handleNextQuestion = () => {
+    if (currentQuestionIndex < details.length - 1) {
+      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+    }
+  };
+  const handleApproveClick = () => {
+    if (currentQuestionIndex < details.length - 1) {
+      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+    }
+  };
+  const handleEditClick = () => {
+    if (currentQuestionIndex < details.length - 1) {
+      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+    }
+  };
+  const handleDiscardClick = () => {
+    if (currentQuestionIndex < details.length - 1) {
+      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+    }
+  };
+  const handleNextClick = () => {
+    if (currentQuestionIndex < details.length - 1) {
+      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+    }
+  };
 
   useEffect(() => {
     if (showDashboard) {
@@ -43,33 +69,6 @@ function DashboardPage({details}) {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, [showDashboard]);
-
-
-
-
-
-
-  const [answer, setAnswer] = useState("");
-  const [isEditing, setIsEditing] = useState(false);
-
-  const handleInputChange = (event) => {
-    setAnswer(event.target.value);
-  };
-
-  const handleEditClick = () => {
-    setIsEditing(true);
-  };
-
-  const handleApproveClick = () => {
-    setIsEditing(false);
-    // Implement the logic to approve the answer
-  };
-
-  const handleDiscardClick = () => {
-    setAnswer("");
-    setIsEditing(false);
-  };
-
 
   if (!details || details.length === 0) {
     return (
@@ -135,41 +134,55 @@ function DashboardPage({details}) {
             </button>
           </div>
           <div className="quiz-question">
-            <h3>Question 1/5</h3>
+            <h3>
+              Question {currentQuestionIndex + 1}/{details.length}
+            </h3>
             <ul>
-              {details.map((detail, index) => (
-                <li key={index}>
-                  <p>{detail.question}</p>
-                  <p>{detail.option1}</p>
-                  <p>{detail.option2}</p>
-                  <p>{detail.option3}</p>
-                  <p>{detail.option4}</p>
-                  <p>{detail.answer}</p>
-
-                </li>
-              ))}
+              <li>{details[currentQuestionIndex].question}</li>
+              <li>{details[currentQuestionIndex].option1}</li>
+              <li>{details[currentQuestionIndex].option2}</li>
+              <li>{details[currentQuestionIndex].option3}</li>
+              <li>{details[currentQuestionIndex].option4}</li>
+              <li>{details[currentQuestionIndex].answer}</li>
             </ul>
             <form>
               <textarea
-                value={answer}
-                onChange={handleInputChange}
-                readOnly={!isEditing}
+                value={selectedOptions[currentQuestionIndex]}
+                readOnly
                 placeholder="Type your answer here"
               />
               <div className="button-group">
-                <button type="button" className="edit-button" onClick={handleEditClick}>
+                <button
+                  type="button"
+                  className="edit-button"
+                  onClick={handleEditClick}
+                >
                   Edit Answer
                 </button>
-                <button type="button" className="approve-button" onClick={handleApproveClick}>
+                <button
+                  type="button"
+                  className="approve-button"
+                  onClick={handleApproveClick}
+                >
                   Approve
                 </button>
-                <button type="button" className="discard-button" onClick={handleDiscardClick}>
+                <button
+                  type="button"
+                  className="discard-button"
+                  onClick={handleDiscardClick}
+                >
                   Discard
                 </button>
               </div>
               <div className="bottom-buttons">
-                <button type="button" className="next-button">Next Question</button>
-                <button type="button" className="generate-button">Generate</button>
+                <button
+                  type="button"
+                  className="next-button"
+                  onClick={handleNextClick}
+                >
+                  Next Question
+                </button>
+                {/* Add other buttons as needed */}
               </div>
             </form>
           </div>
