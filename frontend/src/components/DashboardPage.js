@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./DashboardPage.css";
 
-function DashboardPage() {
+function DashboardPage({details}) {
+
   const [selectedOptions, setSelectedOptions] = useState([""]);
   const [showDashboard, setShowDashboard] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
@@ -68,6 +69,17 @@ function DashboardPage() {
     setAnswer("");
     setIsEditing(false);
   };
+
+
+  if (!details || details.length === 0) {
+    return (
+      <div className="student-page">
+        <h1>Student Page</h1>
+        <div>Loading...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="app">
       <button className="dashboard-toggle" onClick={toggleDashboard}>
@@ -124,9 +136,19 @@ function DashboardPage() {
           </div>
           <div className="quiz-question">
             <h3>Question 1/5</h3>
-            <p>
-              What is React?
-            </p>
+            <ul>
+              {details.map((detail, index) => (
+                <li key={index}>
+                  <p>{detail.question}</p>
+                  <p>{detail.option1}</p>
+                  <p>{detail.option2}</p>
+                  <p>{detail.option3}</p>
+                  <p>{detail.option4}</p>
+                  <p>{detail.answer}</p>
+
+                </li>
+              ))}
+            </ul>
             <form>
               <textarea
                 value={answer}
