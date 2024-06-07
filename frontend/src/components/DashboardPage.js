@@ -1,12 +1,24 @@
 import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
 import "./DashboardPage.css";
 
-function DashboardPage({ details }) {
+function DashboardPage() {
   const [selectedOptions, setSelectedOptions] = useState([""]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [showDashboard, setShowDashboard] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
+  const [details, setDetails] = useState([]);
   const sidebarRef = useRef(null);
+
+  useEffect(() => {
+    axios.get('http://127.0.0.1:8000/proctor/reactview/')
+      .then(res => {
+        setDetails(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, []);
 
   const handleSelectChange = (index, event) => {
     const newSelectedOptions = [...selectedOptions];
@@ -37,22 +49,7 @@ function DashboardPage({ details }) {
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
     }
   };
-  const handleApproveClick = () => {
-    if (currentQuestionIndex < details.length - 1) {
-      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-    }
-  };
-  const handleEditClick = () => {
-    if (currentQuestionIndex < details.length - 1) {
-      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-    }
-  };
 
-  const handleDiscardClick = () => {
-    if (currentQuestionIndex < details.length - 1) {
-      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-    }
-  };
   const handlePreviousClick = () => {
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
@@ -156,21 +153,21 @@ function DashboardPage({ details }) {
                 <button
                   type="button"
                   className="edit-button"
-                  onClick={handleEditClick}
+                  onClick={handleNextClick}
                 >
                   Edit Answer
                 </button>
                 <button
                   type="button"
                   className="approve-button"
-                  onClick={handleApproveClick}
+                  onClick={handleNextClick}
                 >
                   Approve
                 </button>
                 <button
                   type="button"
                   className="discard-button"
-                  onClick={handleDiscardClick}
+                  onClick={handleNextClick}
                 >
                   Discard
                 </button>
@@ -186,7 +183,6 @@ function DashboardPage({ details }) {
                 <button type="button" onClick={handlePreviousClick} className="add-button">
                   Previous Question
                 </button>
-                {/* Add other buttons as needed */}
               </div>
             </form>
           </div>

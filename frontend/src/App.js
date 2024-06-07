@@ -1,28 +1,15 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import LoginPage from './components/LoginPage';
-import DashboardPage from './components/DashboardPage';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LoginPage from "./components/LoginPage";
+import DashboardPage from "./components/DashboardPage";
 import StudentPage from './components/StudentPage';
-import CameraFeed from './components/CameraFeed';
-import axios from 'axios';
+import CameraFeed from "./components/CameraFeed";
+// import StudentPage from "./components/testing";
 
 class App extends React.Component {
   state = {
     details: [],
-  }
-
-  componentDidMount() {
-    axios.get('http://127.0.0.1:8000/proctor/reactview/')
-      .then(res => {
-        this.setState({
-          details: res.data
-        });
-        console.log(res.data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
+  };
 
   render() {
     const { details } = this.state;
@@ -30,10 +17,10 @@ class App extends React.Component {
       <Router>
         <Routes>
           <Route path="/" element={<LoginPage />} />
-          <Route path="/dashboard" element={<DashboardPage details={details} />} />
-          <Route path="/student" element={<StudentPage details={details} />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/student" element={<StudentPage />} />
           <Route path="/camera" element={<CameraFeed />} />
-
+          {/* <Route path="/testing" element={<StudentPage />} /> */}
         </Routes>
       </Router>
     );
