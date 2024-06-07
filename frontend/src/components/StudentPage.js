@@ -1,29 +1,24 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import "./testing.css";
+import React, { useState, useEffect } from 'react';
+import './StudentPage.css';
+import CameraFeed from './CameraFeed';
 
-const StudentPage = () => {
+const StudentPage = ({ details }) => {
   const [timeLeft, setTimeLeft] = useState(900); // 15 minutes timer
   const [currentQuestion, setCurrentQuestion] = useState(1);
-  const [questionStatus, setQuestionStatus] = useState({});
-  const [selectedAnswers, setSelectedAnswers] = useState({});
-  const [isNavOpen, setIsNavOpen] = useState(false);
-  const [details, setDetails] = useState([]);
-  const [loading, setLoading] = useState(true); // Added loading state
-
-  useEffect(() => {
-    axios
-      .get("http://127.0.0.1:8000/proctor/reactview/")
-      .then((res) => {
-        setDetails(res.data);
-        setLoading(false); // Data loaded
-        // Log the fetched data
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false); // Error occurred, stop loading
-      });
-  }, []);
+  const [questionStatus, setQuestionStatus] = useState({
+    1: { seen: false, answered: false, review: false },
+    2: { seen: false, answered: false, review: false },
+    3: { seen: false, answered: false, review: false },
+    4: { seen: false, answered: false, review: false },
+    5: { seen: false, answered: false, review: false }
+  });
+  const [selectedAnswers, setSelectedAnswers] = useState({
+    1: '',
+    2: '',
+    3: '',
+    4: [],
+    5: []
+  });
 
   useEffect(() => {
     if (timeLeft > 0) {
@@ -36,51 +31,31 @@ const StudentPage = () => {
     setQuestionStatus((prevState) => ({
       ...prevState,
       [currentQuestion]: { ...prevState[currentQuestion], seen: true },
-      [questionNumber]: { ...prevState[questionNumber], seen: true },
+      [questionNumber]: { ...prevState[questionNumber], seen: true }
     }));
     setCurrentQuestion(questionNumber);
-    setIsNavOpen(false); // Close navigation when a question is selected
   };
 
   const handleMarkForReview = () => {
     setQuestionStatus((prevState) => ({
       ...prevState,
-      [currentQuestion]: {
-        ...prevState[currentQuestion],
-        review: !prevState[currentQuestion].review,
-      },
+      [currentQuestion]: { ...prevState[currentQuestion], review: !prevState[currentQuestion].review }
     }));
   };
 
   const handleOptionChange = (questionNumber, answer) => {
     setSelectedAnswers((prevState) => ({
       ...prevState,
-      [questionNumber]: answer,
+      [questionNumber]: answer
     }));
     setQuestionStatus((prevState) => ({
       ...prevState,
-      [questionNumber]: { ...prevState[questionNumber], answered: true },
-    }));
-  };
-
-  const handleCheckboxChange = (questionNumber, answer) => {
-    setSelectedAnswers((prevState) => {
-      const newAnswers = prevState[questionNumber].includes(answer)
-        ? prevState[questionNumber].filter((item) => item !== answer)
-        : [...prevState[questionNumber], answer];
-      return {
-        ...prevState,
-        [questionNumber]: newAnswers,
-      };
-    });
-    setQuestionStatus((prevState) => ({
-      ...prevState,
-      [questionNumber]: { ...prevState[questionNumber], answered: true },
+      [questionNumber]: { ...prevState[questionNumber], answered: true }
     }));
   };
 
   const handleNextQuestion = () => {
-    if (currentQuestion < details.length) {
+    if (currentQuestion < 5) {
       handleQuestionChange(currentQuestion + 1);
     }
   };
@@ -91,132 +66,45 @@ const StudentPage = () => {
     }
   };
 
+  const handleCheckboxChange = (questionNumber, answer) => {
+    setSelectedAnswers((prevState) => {
+      const newAnswers = prevState[questionNumber].includes(answer)
+        ? prevState[questionNumber].filter((item) => item !== answer)
+        : [...prevState[questionNumber], answer];
+      return {
+        ...prevState,
+        [questionNumber]: newAnswers
+      };
+    });
+    setQuestionStatus((prevState) => ({
+      ...prevState,
+      [questionNumber]: { ...prevState[questionNumber], answered: true }
+    }));
+  };
+
   const handleSubmit = () => {
     console.log("Submitting test with answers: ", selectedAnswers);
     // Submission logic here
   };
 
+  const [isNavOpen, setIsNavOpen] = useState(false);
+
   const handleToggleNav = () => {
-    console.log("Toggling navigation. Current state: ", isNavOpen);
     setIsNavOpen(!isNavOpen);
   };
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className="test-container">
       <button className="nav-toggle" onClick={handleToggleNav}>
-        {isNavOpen ? "Close Navigation" : "Open Navigation"}
+        {isNavOpen ? '☰' : '☰'}
       </button>
-
-      {details.length > 0 ? (
-        <div>
-          <label htmlFor="q1a1">{details[currentQuestion - 1].question}</label>
-          <br></br>
-
-          <input
-            type="radio"
-            id="q1a1"
-            name="q1"
-            value="A"
-            checked={selectedAnswers[1] === "A"}
-            onChange={() => handleOptionChange(1, "A")}
-          />
-
-          <label htmlFor="q1a1">{details[currentQuestion - 1].option1}</label>
-          <br></br>
-
-          <input
-            type="radio"
-            id="q2a2"
-            name="q2"
-            value="B"
-            checked={selectedAnswers[2] === 'B'}
-            onChange={() => handleOptionChange(2, 'B')}
-          />
-
-          <label htmlFor="q1a1">{details[currentQuestion - 1].option2}</label>
-          <br></br>
-
-          <input
-            type="radio"
-            id="q1a1"
-            name="q1"
-            value="C"
-            checked={selectedAnswers[3] === "C"}
-            onChange={() => handleOptionChange(1, "C")}
-          />
-          <label htmlFor="q1a1">{details[currentQuestion - 1].option3}</label>
-          <br></br>
-          <input
-            type="radio"
-            id="q1a1"
-            name="q1"
-            value="A"
-            checked={selectedAnswers[1] === "A"}
-            onChange={() => handleOptionChange(1, "A")}
-          />
-          <label htmlFor="q1a1">{details[currentQuestion - 1].option4}</label>
-          <br></br>
-
-          <div className="next-prev-buttons">
-            <button
-              className="next-prev-button"
-              onClick={handlePreviousQuestion}
-              disabled={currentQuestion === 1}
-            >
-              Previous Question
-            </button>
-            <button
-              className="next-prev-button"
-              onClick={handleNextQuestion}
-              disabled={currentQuestion === details.length}
-            >
-              Next Question
-            </button>
-          </div>
-        </div>
-      ) : (
-        <div>No details available</div>
-      )}
-
-      <div className="right-section">
-        <div className="timer">
-          <label>Time Left: </label>
-          <span className="time-left">{timeLeft} seconds</span>
-        </div>
-        <button className="review-button" onClick={handleMarkForReview}>
-          {questionStatus[currentQuestion]?.review
-            ? "Unmark Review"
-            : "Mark for Review"}
-        </button>
-        <button className="submit-button" onClick={handleSubmit}>
-          Submit Test
-        </button>
-        <div className="navigation-buttons">
-          {Object.keys(questionStatus).map((questionNumber) => (
-            <button
-              key={questionNumber}
-              className={`nav-button ${
-                questionStatus[questionNumber]?.answered ? "answered" : ""
-              } ${questionStatus[questionNumber]?.seen ? "seen" : ""} ${
-                questionStatus[questionNumber]?.review ? "review" : ""
-              } ${
-                currentQuestion === parseInt(questionNumber) ? "active" : ""
-              }`}
-              onClick={() => handleQuestionChange(parseInt(questionNumber))}
-            >
-              {questionNumber}
-              {questionStatus[questionNumber]?.answered &&
-                questionStatus[questionNumber]?.review && (
-                  <span className="review-dot"></span>
-                )}
-            </button>
-          ))}
+      <div className={`right-section ${isNavOpen ? 'open' : ''}`}>
+        <div className="camera-feed-container">
+          <CameraFeed />
         </div>
         <div className="info-box">
+          <label>Time Left: </label>
+          <span className="time-left">{timeLeft} seconds</span>
           <div className="info-item">
             <div className="info-color unanswered"></div>
             <span>Unseen/Unanswered</span>
@@ -234,9 +122,181 @@ const StudentPage = () => {
             <span>Marked for Review (Answered)</span>
           </div>
         </div>
+        <div className="navigation-buttons">
+          {Object.keys(questionStatus).map((questionNumber) => (
+            <button
+              key={questionNumber}
+              className={`nav-button ${questionStatus[questionNumber].answered ? 'answered' : ''} ${questionStatus[questionNumber].seen ? 'seen' : ''} ${questionStatus[questionNumber].review ? 'review' : ''} ${currentQuestion === parseInt(questionNumber) ? 'active' : ''}`}
+              onClick={() => handleQuestionChange(parseInt(questionNumber))}
+            >
+              {questionNumber}
+              {questionStatus[questionNumber].answered && questionStatus[questionNumber].review && <span className="review-dot"></span>}
+            </button>
+          ))}
+        </div>
+        <button className="review-button" onClick={handleMarkForReview}>
+          {questionStatus[currentQuestion].review ? 'Unmark Review' : 'Mark for Review'}
+        </button>
+        <button className="submit-button" onClick={handleSubmit}>Submit Test</button>
+      </div>
+      <div className={`question-section ${isNavOpen ? 'nav-open' : ''}`}>
+        {currentQuestion === 1 && (
+          <div className="question">
+            <label>1. Question one text here?</label>
+            <div className="options">
+              <div>
+                <input
+                  type="radio"
+                  id="q1a1"
+                  name="q1"
+                  value="A"
+                  checked={selectedAnswers[1] === 'A'}
+                  onChange={() => handleOptionChange(1, 'A')}
+                />
+                <label htmlFor="q1a1">Option A</label>
+              </div>
+              <div>
+                <input
+                  type="radio"
+                  id="q1a2"
+                  name="q1"
+                  value="B"
+                  checked={selectedAnswers[1] === 'B'}
+                  onChange={() => handleOptionChange(1, 'B')}
+                />
+                <label htmlFor="q1a2">Option B</label>
+              </div>
+            </div>
+          </div>
+        )}
+        {currentQuestion === 2 && (
+          <div className="question">
+            <label>2. Question two text here?</label>
+            <div className="options">
+              <div>
+                <input
+                  type="radio"
+                  id="q2a1"
+                  name="q2"
+                  value="A"
+                  checked={selectedAnswers[2] === 'A'}
+                  onChange={() => handleOptionChange(2, 'A')}
+                />
+                <label htmlFor="q2a1">Option A</label>
+              </div>
+              <div>
+                <input
+                  type="radio"
+                  id="q2a2"
+                  name="q2"
+                  value="B"
+                  checked={selectedAnswers[2] === 'B'}
+                  onChange={() => handleOptionChange(2, 'B')}
+                />
+                <label htmlFor="q2a2">Option B</label>
+              </div>
+            </div>
+          </div>
+        )}
+        {currentQuestion === 3 && (
+          <div className="question">
+            <label>3. Question three text here?</label>
+            <div className="options">
+              <div>
+                <input
+                  type="radio"
+                  id="q3a1"
+                  name="q3"
+                  value="A"
+                  checked={selectedAnswers[3] === 'A'}
+                  onChange={() => handleOptionChange(3, 'A')}
+                />
+                <label htmlFor="q3a1">Option A</label>
+              </div>
+              <div>
+                <input
+                  type="radio"
+                  id="q3a2"
+                  name="q3"
+                  value="B"
+                  checked={selectedAnswers[3] === 'B'}
+                  onChange={() => handleOptionChange(3, 'B')}
+                />
+                <label htmlFor="q3a2">Option B</label>
+              </div>
+            </div>
+          </div>
+        )}
+        {currentQuestion === 4 && (
+          <div className="question">
+            <label>4. Question four text here?</label>
+            <div className="options">
+              <div>
+                <input
+                  type="checkbox"
+                  id="q4a1"
+                  name="q4"
+                  value="A"
+                  checked={selectedAnswers[4].includes('A')}
+                  onChange={() => handleCheckboxChange(4, 'A')}
+                />
+                <label htmlFor="q4a1">Option A</label>
+              </div>
+              <div>
+                <input
+                  type="checkbox"
+                  id="q4a2"
+                  name="q4"
+                  value="B"
+                  checked={selectedAnswers[4].includes('B')}
+                  onChange={() => handleCheckboxChange(4, 'B')}
+                />
+                <label htmlFor="q4a2">Option B</label>
+              </div>
+            </div>
+          </div>
+        )}
+        {currentQuestion === 5 && (
+          <div className="question">
+            <label>5. Question five text here?</label>
+            <div className="options">
+              <div>
+                <input
+                  type="checkbox"
+                  id="q5a1"
+                  name="q5"
+                  value="A"
+                  checked={selectedAnswers[5].includes('A')}
+                  onChange={() => handleCheckboxChange(5, 'A')}
+                />
+                <label htmlFor="q5a1">Option A</label>
+              </div>
+              <div>
+                <input
+                  type="checkbox"
+                  id="q5a2"
+                  name="q5"
+                  value="B"
+                  checked={selectedAnswers[5].includes('B')}
+                  onChange={() => handleCheckboxChange(5, 'B')}
+                />
+                <label htmlFor="q5a2">Option B</label>
+              </div>
+            </div>
+          </div>
+        )}
+        <div className="navigation">
+          <button className="previous-button" onClick={handlePreviousQuestion} disabled={currentQuestion === 1}>
+            Previous
+          </button>
+          <button className="next-button" onClick={handleNextQuestion} disabled={currentQuestion === 5}>
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );
 };
 
 export default StudentPage;
+
