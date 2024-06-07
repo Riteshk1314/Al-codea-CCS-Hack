@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./StudentPage.css";
 import CameraFeed from "./CameraFeed";
 
-const StudentPage = ({ details }) => {
+const StudentPage = () => {
   const [timeLeft, setTimeLeft] = useState(900); // 15 minutes timer
   const [currentQuestion, setCurrentQuestion] = useState(1);
+  const [details, setDetails] = useState([]);
+  
   const [questionStatus, setQuestionStatus] = useState({
     1: { seen: false, answered: false, review: false },
     2: { seen: false, answered: false, review: false },
@@ -16,9 +19,18 @@ const StudentPage = ({ details }) => {
     1: "",
     2: "",
     3: "",
-    4: [],
-    5: [],
+    4: "",
+    5: "",
   });
+  useEffect(() => {
+    axios.get('http://127.0.0.1:8000/proctor/reactview/')
+      .then(res => {
+        setDetails(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, []);
 
   useEffect(() => {
     if (timeLeft > 0) {
@@ -67,22 +79,6 @@ const StudentPage = ({ details }) => {
     if (currentQuestion > 1) {
       handleQuestionChange(currentQuestion - 1);
     }
-  };
-
-  const handleCheckboxChange = (questionNumber, answer) => {
-    setSelectedAnswers((prevState) => {
-      const newAnswers = prevState[questionNumber].includes(answer)
-        ? prevState[questionNumber].filter((item) => item !== answer)
-        : [...prevState[questionNumber], answer];
-      return {
-        ...prevState,
-        [questionNumber]: newAnswers,
-      };
-    });
-    setQuestionStatus((prevState) => ({
-      ...prevState,
-      [questionNumber]: { ...prevState[questionNumber], answered: true },
-    }));
   };
 
   const handleSubmit = () => {
@@ -156,149 +152,60 @@ const StudentPage = ({ details }) => {
         </button>
       </div>
       <div className={`question-section ${isNavOpen ? "nav-open" : ""}`}>
-        {currentQuestion === 1 && (
-          <div className="question">
-            <label>1. Question one text here?</label>
-            <div className="options">
-              <div>
-                <input
-                  type="radio"
-                  id="q1a1"
-                  name="q1"
-                  value="A"
-                  checked={selectedAnswers[1] === "A"}
-                  onChange={() => handleOptionChange(1, "A")}
-                />
-                <label htmlFor="q1a1">Option A</label>
-              </div>
-              <div>
-                <input
-                  type="radio"
-                  id="q1a2"
-                  name="q1"
-                  value="B"
-                  checked={selectedAnswers[1] === "B"}
-                  onChange={() => handleOptionChange(1, "B")}
-                />
-                <label htmlFor="q1a2">Option B</label>
-              </div>
-            </div>
-          </div>
-        )}
-        {currentQuestion === 2 && (
-          <div className="question">
-            <label>2. Question two text here?</label>
-            <div className="options">
-              <div>
-                <input
-                  type="radio"
-                  id="q2a1"
-                  name="q2"
-                  value="A"
-                  checked={selectedAnswers[2] === "A"}
-                  onChange={() => handleOptionChange(2, "A")}
-                />
-                <label htmlFor="q2a1">Option A</label>
-              </div>
-              <div>
-                <input
-                  type="radio"
-                  id="q2a2"
-                  name="q2"
-                  value="B"
-                  checked={selectedAnswers[2] === "B"}
-                  onChange={() => handleOptionChange(2, "B")}
-                />
-                <label htmlFor="q2a2">Option B</label>
-              </div>
-            </div>
-          </div>
-        )}
-        {currentQuestion === 3 && (
-          <div className="question">
-            <label>3. Question three text here?</label>
-            <div className="options">
-              <div>
-                <input
-                  type="radio"
-                  id="q3a1"
-                  name="q3"
-                  value="A"
-                  checked={selectedAnswers[3] === "A"}
-                  onChange={() => handleOptionChange(3, "A")}
-                />
-                <label htmlFor="q3a1">Option A</label>
-              </div>
-              <div>
-                <input
-                  type="radio"
-                  id="q3a2"
-                  name="q3"
-                  value="B"
-                  checked={selectedAnswers[3] === "B"}
-                  onChange={() => handleOptionChange(3, "B")}
-                />
-                <label htmlFor="q3a2">Option B</label>
-              </div>
-            </div>
-          </div>
-        )}
-        {currentQuestion === 4 && (
-          <div className="question">
-            <label>4. Question four text here?</label>
-            <div className="options">
-              <div>
-                <input
-                  type="checkbox"
-                  id="q4a1"
-                  name="q4"
-                  value="A"
-                  checked={selectedAnswers[4].includes("A")}
-                  onChange={() => handleCheckboxChange(4, "A")}
-                />
-                <label htmlFor="q4a1">Option A</label>
-              </div>
-              <div>
-                <input
-                  type="checkbox"
-                  id="q4a2"
-                  name="q4"
-                  value="B"
-                  checked={selectedAnswers[4].includes("B")}
-                  onChange={() => handleCheckboxChange(4, "B")}
-                />
-                <label htmlFor="q4a2">Option B</label>
-              </div>
-            </div>
-          </div>
-        )}
-        {currentQuestion === 5 && (
-          <div className="question">
-            <label>5. Question five text here?</label>
-            <div className="options">
-              <div>
-                <input
-                  type="checkbox"
-                  id="q5a1"
-                  name="q5"
-                  value="A"
-                  checked={selectedAnswers[5].includes("A")}
-                  onChange={() => handleCheckboxChange(5, "A")}
-                />
-                <label htmlFor="q5a1">Option A</label>
-              </div>
-              <div>
-                <input
-                  type="checkbox"
-                  id="q5a2"
-                  name="q5"
-                  value="B"
-                  checked={selectedAnswers[5].includes("B")}
-                  onChange={() => handleCheckboxChange(5, "B")}
-                />
-                <label htmlFor="q5a2">Option B</label>
-              </div>
-            </div>
+        {details.length > 0 && (
+          <div>
+            <label htmlFor={`q${currentQuestion}a1`}>
+              {details[currentQuestion - 1].question}
+            </label>
+            <br></br>
+            <input
+              type="radio"
+              id={`q${currentQuestion}a1`}
+              name={`q${currentQuestion}`}
+              value="A"
+              checked={selectedAnswers[currentQuestion] === "A"}
+              onChange={() => handleOptionChange(currentQuestion, "A")}
+            />
+            <label htmlFor={`q${currentQuestion}a1`}>
+              {details[currentQuestion - 1].option1}
+            </label>
+            <br></br>
+            <input
+              type="radio"
+              id={`q${currentQuestion}a2`}
+              name={`q${currentQuestion}`}
+              value="B"
+              checked={selectedAnswers[currentQuestion] === "B"}
+              onChange={() => handleOptionChange(currentQuestion, "B")}
+            />
+            <label htmlFor={`q${currentQuestion}a2`}>
+              {details[currentQuestion - 1].option2}
+            </label>
+            <br></br>
+            <input
+              type="radio"
+              id={`q${currentQuestion}a3`}
+              name={`q${currentQuestion}`}
+              value="C"
+              checked={selectedAnswers[currentQuestion] === "C"}
+              onChange={() => handleOptionChange(currentQuestion, "C")}
+            />
+            <label htmlFor={`q${currentQuestion}a3`}>
+              {details[currentQuestion - 1].option3}
+            </label>
+            <br></br>
+            <input
+              type="radio"
+              id={`q${currentQuestion}a4`}
+              name={`q${currentQuestion}`}
+              value="D"
+              checked={selectedAnswers[currentQuestion] === "D"}
+              onChange={() => handleOptionChange(currentQuestion, "D")}
+            />
+            <label htmlFor={`q${currentQuestion}a4`}>
+              {details[currentQuestion - 1].option4}
+            </label>
+            <br></br>
           </div>
         )}
         <div className="navigation">
