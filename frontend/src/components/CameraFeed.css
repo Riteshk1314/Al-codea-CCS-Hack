@@ -1,12 +1,30 @@
-/* Webcam.css */
 .webcam-video {
   position: fixed;
-  top: 10px;
-  right: 10px;
-  width: 200px; /* Adjust the size as needed */
-  height: 150px; /* Maintain aspect ratio as needed */
+  bottom: 5%;
+  right: 3%;
+  width: 260px; /* Adjust the size as needed */
+  height: 200px; /* Maintain aspect ratio as needed */
   border: 2px solid #ccc; /* Optional: add a border */
   border-radius: 10px; /* Optional: add rounded corners */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Optional: add a shadow for better visibility */
   z-index: 1000; /* Ensure it stays on top */
 }
+
+/* Styles for devices with a width of 768px or less (tablets and mobiles) */
+@media (max-width: 768px) {
+  .webcam-video {
+    bottom: 10%;
+    right: 25%; /* Center horizontally */
+    transform: translateX(-50%); /* Center horizontally */
+    width: 200px; /* Adjust size for smaller screens */
+    height: 150px; /* Adjust size for smaller screens */
+  }
+}
+
+/* Hide the webcam video on devices with a width of 480px or less (mobile phones) */
+@media (max-width: 480px) {
+  .webcam-video {
+    display: none;
+  }
+}
+
