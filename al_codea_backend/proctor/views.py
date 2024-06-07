@@ -33,17 +33,17 @@ def object_creation(question,options,answer,field):
     option3=options[2],
     option4='none of these',
     answer=answer
-    
-    if not Question.objects.filter(field=Topic.objects.get(topic=field),question=question).exists():
-        Question.objects.create(
-            field=Topic.objects.get(topic=field),
-            question=question,
-            option1=option1,
-            option2=option2,
-            option3=option3,
-            option4=option4,
-            answer=answer
-        )
+    if Topic.objects.filter(topic=field).exists():
+        if not Question.objects.filter(field=Topic.objects.get(topic=field),question=question).exists():
+            Question.objects.create(
+                field=Topic.objects.get(topic=field),
+                question=question,
+                option1=option1,
+                option2=option2,
+                option3=option3,
+                option4=option4,
+                answer=answer
+            )
 
 
 
@@ -54,18 +54,19 @@ def question_creation(prompt,field):
     question = ''
     word = ''
     is_answer = False
-
+    # print(data)
     for char in data:
+        
         word += char
         if char == ' ':
-            if word == 'Correct ':
+            if word == 'Correct ' or word==  'Answer: ':
                 # print("000")
                 is_answer = True
             word = ''
         if char == '\n':
             if is_answer:
                 # print(1)
-                
+
                 total_questions.append(question.strip())
                 question = ''
                 is_answer = False
@@ -73,28 +74,27 @@ def question_creation(prompt,field):
         question += char
 
 
-
+    print(question_creation)
 
     for i in total_questions:
         options=[]
         answer=''
         ques=''
         lines = i.split('\n')
-        
+        # print(lines)
         for line in lines:
-            if line.startswith('   a)') or line.startswith('   b)') or line.startswith('   c)') :
+            if line.startswith('   a)') or line.startswith('a)') or line.startswith('b)') or line.startswith('c)') or line.startswith('   b)') or line.startswith('   c)') :
                 options.append(line.strip())
-            elif line.startswith('   Correct'):
+            elif line.startswith('   Correct') or line.startswith('Answer: '):
                 # print(1)
 
                 answer=line
             else:
-                if not line.startswith('   Option'): 
+                if not line.startswith('   Option' ) or line.startswith('Options'): 
                     ques+=line
                     ques+='\n'
-    
+
         question=ques
-        # print(question)
         # print(question)
         # for b in options:
         #     print(b)
@@ -117,13 +117,12 @@ def index(request):
         
         for i in range(int(count)):
             fields.append(data.get(f'field{i+1}'))
-            
+        print(fields)
         xyz=str(ques_refined())
         print(xyz)
+        question_creation(xyz,fields[0]) #here in xyz ritesh will pass the string of questions from langchain
         
-        question_creation(xyz,"dsa") #here in xyz ritesh will pass the string of questions from langchain
-        
-        return redirect('/')
+        return redirect('/proctor/generate-question/')
     
     querryset=Topic.objects.all()
     
