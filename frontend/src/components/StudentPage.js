@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import {useNavigate} from "react-router-dom"; 
 import "./StudentPage.css";
 import CameraFeed from "./CameraFeed";
+import axios from "axios";
 
 const StudentPage = () => {
+  const navigate = useNavigate();
   const [timeLeft, setTimeLeft] = useState(900); // 15 minutes timer
   const [currentQuestion, setCurrentQuestion] = useState(1);
   const [details, setDetails] = useState([]);
-  
   const [questionStatus, setQuestionStatus] = useState({
     1: { seen: false, answered: false, review: false },
     2: { seen: false, answered: false, review: false },
@@ -84,6 +85,7 @@ const StudentPage = () => {
   const handleSubmit = () => {
     console.log("Submitting test with answers: ", selectedAnswers);
     // Submission logic here
+    navigate("/result");
   };
 
   const [isNavOpen, setIsNavOpen] = useState(false);

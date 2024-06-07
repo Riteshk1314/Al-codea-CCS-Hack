@@ -9,6 +9,33 @@ body {
     color: #333;
   }
   
+.TestButton {
+  background: #001529;
+  width: 100%;
+  color: #fff;
+  /* Add any other CSS properties for styling the button */
+  border: none; /* Remove default button border */ /* Adjust padding as needed */
+  cursor: pointer; /* Change cursor on hover */
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.TestButton{
+  margin: 15px 0;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.1s;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.TestButton:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+
   .app {
     display: flex;
     height: 100%;
@@ -37,6 +64,12 @@ body {
   }
   
   .dashboard {
+    background: #001529;
+    color: #fff;
+    /* Add any other CSS properties for styling the button */
+    border: none; /* Remove default button border */ /* Adjust padding as needed */
+    cursor: pointer; /* Change cursor on hover */
+    border-radius: 5px;
     display: flex;
     flex-direction: column;
     height: 100%;

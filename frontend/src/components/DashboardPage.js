@@ -1,8 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./DashboardPage.css";
+import {useNavigate} from "react-router-dom"; 
+
+
 
 function DashboardPage() {
+  const navigate=useNavigate();
   const [selectedOptions, setSelectedOptions] = useState([""]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [showDashboard, setShowDashboard] = useState(false);
@@ -11,11 +15,12 @@ function DashboardPage() {
   const sidebarRef = useRef(null);
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/proctor/reactview/')
-      .then(res => {
+    axios
+      .get("http://127.0.0.1:8000/proctor/reactview/")
+      .then((res) => {
         setDetails(res.data);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }, []);
@@ -55,6 +60,9 @@ function DashboardPage() {
       setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
     }
   };
+  const handleTestButton = () => {
+    navigate("/student");
+  };
 
   useEffect(() => {
     if (showDashboard) {
@@ -91,7 +99,8 @@ function DashboardPage() {
             <h2>Quiz Time</h2>
             <nav>
               <ul>
-                <li>Dashboard</li>
+                <li>Profile</li>
+                <button onClick={handleTestButton} class="TestButton">Dashboard</button>
                 <li>Support</li>
                 <li>Notification</li>
               </ul>
@@ -180,7 +189,11 @@ function DashboardPage() {
                 >
                   Next Question
                 </button>
-                <button type="button" onClick={handlePreviousClick} className="add-button">
+                <button
+                  type="button"
+                  onClick={handlePreviousClick}
+                  className="next-button"
+                >
                   Previous Question
                 </button>
               </div>

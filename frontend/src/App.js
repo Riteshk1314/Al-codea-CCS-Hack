@@ -2,9 +2,9 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginPage from "./components/LoginPage";
 import DashboardPage from "./components/DashboardPage";
-import StudentPage from './components/StudentPage';
+import StudentPage from "./components/StudentPage";
 import CameraFeed from "./components/CameraFeed";
-// import StudentPage from "./components/testing";
+import Result from "./components/Result";
 
 class App extends React.Component {
   state = {
@@ -18,9 +18,9 @@ class App extends React.Component {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/student" element={<StudentPage />} />
+          <Route path="/student" element={<StudentPage details={details} />} />
           <Route path="/camera" element={<CameraFeed />} />
-          {/* <Route path="/testing" element={<StudentPage />} /> */}
+          <Route path="/result" element={<Result />} />
         </Routes>
       </Router>
     );
