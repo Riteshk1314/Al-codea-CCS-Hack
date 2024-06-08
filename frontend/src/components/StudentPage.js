@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import {useNavigate} from "react-router-dom"; 
+import { useNavigate } from "react-router-dom"; 
 import "./StudentPage.css";
 import CameraFeed from "./CameraFeed";
 import axios from "axios";
 
 const StudentPage = () => {
   const navigate = useNavigate();
-  const [timeLeft, setTimeLeft] = useState(900); // 15 minutes timer
+  const [timeLeft, setTimeLeft] = useState(900); 
   const [currentQuestion, setCurrentQuestion] = useState(1);
   const [details, setDetails] = useState([]);
   const [questionStatus, setQuestionStatus] = useState({
@@ -23,6 +23,7 @@ const StudentPage = () => {
     4: "",
     5: "",
   });
+
   useEffect(() => {
     axios.get('http://127.0.0.1:8000/proctor/reactview/')
       .then(res => {
@@ -37,6 +38,8 @@ const StudentPage = () => {
     if (timeLeft > 0) {
       const timerId = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
       return () => clearTimeout(timerId);
+    } else {
+      handleSubmit();
     }
   }, [timeLeft]);
 
@@ -108,7 +111,7 @@ const StudentPage = () => {
           <span className="time-left">{timeLeft} seconds</span>
           <div className="info-item">
             <div className="info-color unanswered"></div>
-            <span>Unseen/Unanswered</span>
+            <span>Unanswered</span>
           </div>
           <div className="info-item">
             <div className="info-color answered"></div>
@@ -232,3 +235,4 @@ const StudentPage = () => {
 };
 
 export default StudentPage;
+

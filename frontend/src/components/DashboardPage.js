@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./DashboardPage.css";
-import {useNavigate} from "react-router-dom"; 
-
-
+import { useNavigate } from "react-router-dom"; 
 
 function DashboardPage() {
-  const navigate=useNavigate();
-  const [selectedOptions, setSelectedOptions] = useState([""]);
+  const navigate = useNavigate();
+  const [selectedLanguages, setSelectedLanguages] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [showDashboard, setShowDashboard] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
@@ -25,14 +23,9 @@ function DashboardPage() {
       });
   }, []);
 
-  const handleSelectChange = (index, event) => {
-    const newSelectedOptions = [...selectedOptions];
-    newSelectedOptions[index] = event.target.value;
-    setSelectedOptions(newSelectedOptions);
-  };
-
-  const handleAddButtonClick = () => {
-    setSelectedOptions([...selectedOptions, ""]);
+  const handleSelectChange = (event) => {
+    const newLanguage = event.target.value;
+    setSelectedLanguages((prevLanguages) => [...prevLanguages, newLanguage]);
   };
 
   const toggleDashboard = () => {
@@ -60,12 +53,14 @@ function DashboardPage() {
       setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
     }
   };
+
   const handleTestButton = () => {
     navigate("/student");
   };
+
   const handleLogout = () => {
     navigate("/");
-  }
+  };
 
   useEffect(() => {
     if (showDashboard) {
@@ -103,7 +98,7 @@ function DashboardPage() {
             <nav>
               <ul>
                 <li>Profile</li>
-                <button onClick={handleTestButton} class="TestButton">Test</button>
+                <button onClick={handleTestButton} className="TestButton">Test</button>
                 <li>Support</li>
                 <li>Notification</li>
               </ul>
@@ -123,25 +118,17 @@ function DashboardPage() {
         </div>
         <div className="quiz-container">
           <div className="select-container">
-            {selectedOptions.map((option, index) => (
-              <div key={index} className="select-box">
-                <select
-                  value={option}
-                  onChange={(e) => handleSelectChange(index, e)}
-                >
-                  <option value="" disabled>
-                    Select language
-                  </option>
-                  <option value="C++">C++</option>
-                  <option value="C#">C#</option>
-                  <option value="Python">Python</option>
-                </select>
-                <input type="text" value={option} readOnly />
-              </div>
-            ))}
-            <button onClick={handleAddButtonClick} className="add-button">
-              Add
-            </button>
+            <div className="select-box">
+              <select onChange={handleSelectChange} value="">
+                <option value="" disabled>
+                  Select language
+                </option>
+                <option value="C++">C++</option>
+                <option value="C#">C#</option>
+                <option value="Python">Python</option>
+              </select>
+              <input type="text" value={selectedLanguages.join(", ")} readOnly />
+            </div>
           </div>
           <div className="quiz-question">
             <h3>
@@ -157,8 +144,6 @@ function DashboardPage() {
             </ul>
             <form>
               <textarea
-                value={selectedOptions[currentQuestionIndex]}
-                readOnly
                 placeholder="Type your answer here"
               />
               <div className="button-group">
@@ -209,3 +194,5 @@ function DashboardPage() {
 }
 
 export default DashboardPage;
+
+

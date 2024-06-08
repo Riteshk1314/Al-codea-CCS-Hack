@@ -540,8 +540,8 @@ body, html {
 
 .nav-toggle {
   display: none;
-  background-color: #3498db;
-  color: white;
+  background-color: rgba(0, 81, 255, 0.3);
+  color: rgb(255, 255, 255);
   border: none;
   padding: 10px;
   cursor: pointer;
