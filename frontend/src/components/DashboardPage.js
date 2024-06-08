@@ -63,6 +63,9 @@ function DashboardPage() {
   const handleTestButton = () => {
     navigate("/student");
   };
+  const handleLogout = () => {
+    navigate("");
+  }
 
   useEffect(() => {
     if (showDashboard) {
@@ -100,13 +103,13 @@ function DashboardPage() {
             <nav>
               <ul>
                 <li>Profile</li>
-                <button onClick={handleTestButton} class="TestButton">Dashboard</button>
+                <button onClick={handleTestButton} class="TestButton">Test</button>
                 <li>Support</li>
                 <li>Notification</li>
               </ul>
             </nav>
           </div>
-          <button className="logout-button">Log Out</button>
+          <button onClick={handleLogout} className="logout-button">Log Out</button>
         </div>
       </aside>
       <main className={`main-content ${showDashboard ? "with-sidebar" : ""}`}>
