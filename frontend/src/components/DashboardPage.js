@@ -64,7 +64,7 @@ function DashboardPage() {
     navigate("/student");
   };
   const handleLogout = () => {
-    navigate("");
+    navigate("/");
   }
 
   useEffect(() => {
