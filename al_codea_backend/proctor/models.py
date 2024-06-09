@@ -24,8 +24,4 @@ class Topic(models.Model):
 class Question(models.Model):
     field=models.ForeignKey(Topic,on_delete=models.CASCADE)
     question=models.CharField(max_length=1000)
-    option1=models.CharField(max_length=1000)
-    option2=models.CharField(max_length=1000)
-    option3=models.CharField(max_length=1000)
-    option4=models.CharField(max_length=1000,default="none of these")
     answer=models.CharField(max_length=1000)

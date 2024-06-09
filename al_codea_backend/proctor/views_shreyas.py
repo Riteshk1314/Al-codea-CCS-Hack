@@ -61,7 +61,7 @@ def question_creation(prompt,field):
 
     for char in data:
         word += char
-        if char == ' ':
+        if char == '---':
             if word == 'Answer: ':
                 is_answer = True
                 word = ''
@@ -77,7 +77,7 @@ def question_creation(prompt,field):
         
 
     for i in total_questions:
-        options=[]
+        questions=[]
         answer=''
         ques=''
         lines = i.split('\n')
@@ -96,7 +96,7 @@ def question_creation(prompt,field):
         #     print(b)
         # print(answer)
     
-        object_creation(question,options,answer,field)
+        object_creation(question,answer,field)
         
    
     

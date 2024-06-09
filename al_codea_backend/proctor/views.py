@@ -9,7 +9,7 @@ from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.vectorstores import FAISS
 
 from django.shortcuts import render
-from .RAG import ques_maker
+#from .RAG import ques_maker
 from django.shortcuts import render,redirect
 from .models import *
 from .ggroq import ques_refined
@@ -25,23 +25,15 @@ from rest_framework.response import Response
 
 
 
-def object_creation(question,options,answer,field):
+def object_creation(question,answer,field):
     field=field
     question=question
-    option1=options[0],
-    option2=options[1],
-    option3=options[2],
-    option4='none of these',
     answer=answer
     if Topic.objects.filter(topic=field).exists():
         if not Question.objects.filter(field=Topic.objects.get(topic=field),question=question).exists():
             Question.objects.create(
                 field=Topic.objects.get(topic=field),
                 question=question,
-                option1=option1,
-                option2=option2,
-                option3=option3,
-                option4=option4,
                 answer=answer
             )
 
@@ -49,58 +41,25 @@ def object_creation(question,options,answer,field):
 
 def question_creation(prompt,field):
     field=field
-    data=prompt
-    total_questions = [] 
-    question = ''
-    word = ''
-    is_answer = False
-    # print(data)
-    for char in data:
-        
-        word += char
-        if char == ' ':
-            if word == 'Correct ' or word==  'Answer: ':
-                # print("000")
-                is_answer = True
-            word = ''
-        if char == '\n':
-            if is_answer:
-                # print(1)
+    input_string=prompt
 
-                total_questions.append(question.strip())
-                question = ''
-                is_answer = False
-            word = ''
-        question += char
+    parts = input_string.split("$$$$$")
+    questions_part, answers_part = parts[0], parts[1]
+    questions = questions_part.strip().split("---")
+    questions = questions[1:]
 
+  
+    answers = answers_part.strip().split("\n")
 
-    print(question_creation)
+  
+    for i, question in enumerate(questions, 1):
+        print(f"Question {i}:")
+        print(question.strip())
+        print(f"\nAnswer {i}:")
+        print(answers[i])
+        print()
+        object_creation(question,answers,field)
 
-    for i in total_questions:
-        options=[]
-        answer=''
-        ques=''
-        lines = i.split('\n')
-        # print(lines)
-        for line in lines:
-            if line.startswith('   a)') or line.startswith('a)') or line.startswith('b)') or line.startswith('c)') or line.startswith('   b)') or line.startswith('   c)') :
-                options.append(line.strip())
-            elif line.startswith('   Correct') or line.startswith('Answer: '):
-                # print(1)
-
-                answer=line
-            else:
-                if not line.startswith('   Option' ) or line.startswith('Options'): 
-                    ques+=line
-                    ques+='\n'
-
-        question=ques
-        # print(question)
-        # for b in options:
-        #     print(b)
-        # print(answer)
-
-        object_creation(question,options,answer,field)
 
 
 
