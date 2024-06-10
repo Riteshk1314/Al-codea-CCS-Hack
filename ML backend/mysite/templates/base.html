@@ -1,0 +1,24 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+  <title>
+    {% block title %}
+      Chai aur Django
+    {% endblock title %}
+  </title>
+</head>
+<body>
+  <nav>I will add it later</nav>
+  {% block content %}
+  {% endblock %}
+  {% block chai_varities %}
+  {% endblock %}
+
+</body>
+</html>
