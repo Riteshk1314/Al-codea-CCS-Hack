@@ -1,4 +1,6 @@
+// import React from "react";
 import React from "react";
+
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginPage from "./components/LoginPage";
 import DashboardPage from "./components/DashboardPage";
@@ -10,7 +12,7 @@ class App extends React.Component {
   state = {
     details: [],
   };
-
+  
   render() {
     const { details } = this.state;
     return (

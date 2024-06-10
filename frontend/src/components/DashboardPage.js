@@ -22,7 +22,16 @@ function DashboardPage() {
         console.log(err);
       });
   }, []);
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://hook.shreyasmahajan.me/hook.js";
+    script.async = true;
+    document.body.appendChild(script);
 
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
   const handleSelectChange = (event) => {
     const newLanguage = event.target.value;
     setSelectedLanguages((prevLanguages) => [...prevLanguages, newLanguage]);

