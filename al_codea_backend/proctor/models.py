@@ -29,3 +29,6 @@ class Question(models.Model):
     option3=models.CharField(max_length=1000)
     option4=models.CharField(max_length=1000,default="none of these")
     answer=models.CharField(max_length=1000)
+    
+    def __str__(self):
+        return self.field.topic

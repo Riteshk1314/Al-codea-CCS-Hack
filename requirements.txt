@@ -37,3 +37,5 @@ djangorestframework
 llama_index
 groq
 llama_index.llms.groq
+mediapipe
+django-jazzmin

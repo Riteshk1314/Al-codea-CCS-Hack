@@ -1,1 +1,1 @@
-libgl1
+sudo apt install libglu1-mesa-dev

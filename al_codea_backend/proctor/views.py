@@ -241,7 +241,7 @@ class ReactView(generics.ListCreateAPIView):
         queryset = super().get_queryset()
         name = self.request.query_params.get('name')
         if name:
-            queryset = queryset.filter(field=name)
+            queryset = queryset.filter(field__topic=name)
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
     def post(self, request):
