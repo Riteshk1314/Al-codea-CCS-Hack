@@ -8,3 +8,8 @@ class TopicSerializer(serializers.ModelSerializer):
     class Meta:
         model=Topic
         fields=['id','topic']
+        
+# class QuestionDeletionSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model=Question
+#         fields=['id']

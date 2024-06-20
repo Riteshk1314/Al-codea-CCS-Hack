@@ -13,8 +13,9 @@ from .RAG import ques_maker
 from django.shortcuts import render,redirect
 from .models import *
 from .ggroq import ques_refined
-from rest_framework import generics
-from .serializer import ProctorSerializer
+from rest_framework import generics ,status
+from .serializer import ProctorSerializer 
+# from .serializer import  QuestionDeletionSerializer
 from rest_framework.response import Response
 
 # Create your views here.
@@ -237,15 +238,43 @@ def index(request):
 class ReactView(generics.ListCreateAPIView):
     queryset = Question.objects.all()
     serializer_class = ProctorSerializer
-    def get(self, request):
+    def get(self, request): #simply gets all the question in database or question of certain feild if provided in get request
         queryset = super().get_queryset()
         name = self.request.query_params.get('name')
         if name:
             queryset = queryset.filter(field__topic=name)
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
-    def post(self, request):
+    def post(self, request):   # if a whole question is provided the creates that question as an object
         serializer = ProctorSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
+        delete_id = request.POST.get("delete_id") # if delete_id is provided then deletes that question from database in a post request as form data
+        if not delete_id:
+            return Response({"error": "delete_id not provided"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        queryset = Question.objects.filter(id=delete_id)
+        if queryset.exists():
+            queryset.delete()
+            return Response({"message": "Question deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response({"error": "Question not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+        
+# class QuestionDeletionView(generics.ListCreateAPIView):
+#     queryset = Question.objects.all()
+#     serializer_class = ProctorSerializer
+
+#     def post(self, request):
+#         delete_id = request.POST.get("delete_id")
+#         if not delete_id:
+#             return Response({"error": "delete_id not provided"}, status=status.HTTP_400_BAD_REQUEST)
+        
+#         queryset = Question.objects.filter(id=delete_id)
+#         if queryset.exists():
+#             queryset.delete()
+#             return Response({"message": "Question deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+#         else:
+#             return Response({"error": "Question not found"}, status=status.HTTP_404_NOT_FOUND)
+        
